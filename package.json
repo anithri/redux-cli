@@ -15,7 +15,7 @@
     "start": "npm run build:watch",
     "build": "babel src -d lib",
     "build:watch": "babel src --watch -d lib",
-    "lint": "eslint ./src ./test ./blueprints/*/index.js",
+    "lint": "eslint ./src ./test ./blueprints",
     "clean": "rimraf lib",
     "publish:patch": "npm run clean && npm run build && npm version patch && npm publish",
     "publish:minor": "npm run clean && npm run build && npm version minor && npm publish"
