@@ -5,8 +5,19 @@ import FileInfo from 'models/file-info';
 import MockUI from '../helpers/mock-ui';
 import { expectFileToNotExist } from '../helpers/fs-helpers';
 
-const originalPath = path.join(__dirname, '..', 'fixtures', 'file-info-template.txt');
-const mappedPath = path.join(__dirname, '..', '..', 'tmp', 'path-to-overwrite.txt');
+const originalPath = path.join(
+  __dirname,
+  '..',
+  'fixtures',
+  'file-info-template.txt'
+);
+const mappedPath = path.join(
+  __dirname,
+  '..',
+  '..',
+  'tmp',
+  'path-to-overwrite.txt'
+);
 const ui = new MockUI('DEBUG');
 
 describe('(Model) FileInfo', () => {
@@ -39,13 +50,20 @@ describe('(Model) FileInfo', () => {
   describe('#writeFile', () => {
     describe('when file already exists', () => {
       test('throws warning to ui and doesnt overwrite old file', () => {
-        const existingPath = path.join(__dirname, '..', '..', 'tmp', 'path-to-overwrite-a.txt');
+        const existingPath = path.join(
+          __dirname,
+          '..',
+          '..',
+          'tmp',
+          'path-to-overwrite-a.txt'
+        );
         fse.outputFileSync(existingPath, 'some contennt');
 
         const info = new FileInfo({
           templateVariables: {},
           mappedPath: existingPath,
-          ui, originalPath
+          ui,
+          originalPath
         });
         info.writeFile();
         expect(ui.errors).toMatch(/Not writing file/);
@@ -55,11 +73,18 @@ describe('(Model) FileInfo', () => {
 
     describe('when no file exists', () => {
       test('writes the file', () => {
-        const noFilePath = path.join(__dirname, '..', '..', 'tmp', 'path-to-overwrite-b.txt');
+        const noFilePath = path.join(
+          __dirname,
+          '..',
+          '..',
+          'tmp',
+          'path-to-overwrite-b.txt'
+        );
         const info = new FileInfo({
-          templateVariables: {name: 'rendered ejs string'},
+          templateVariables: { name: 'rendered ejs string' },
           mappedPath: noFilePath,
-          ui, originalPath
+          ui,
+          originalPath
         });
         info.writeFile();
 
@@ -73,12 +98,19 @@ describe('(Model) FileInfo', () => {
 
     describe('when dry run option is enabled', () => {
       test('should not write the file', () => {
-        const dryRunPath = path.join(__dirname, '..', '..', 'tmp', 'path-to-overwrite-c.txt');
+        const dryRunPath = path.join(
+          __dirname,
+          '..',
+          '..',
+          'tmp',
+          'path-to-overwrite-c.txt'
+        );
 
         const info = new FileInfo({
-          templateVariables: {name: 'rendered ejs string'},
+          templateVariables: { name: 'rendered ejs string' },
           mappedPath: dryRunPath,
-          ui, originalPath
+          ui,
+          originalPath
         });
         info.writeFile(true);
 
@@ -91,7 +123,7 @@ describe('(Model) FileInfo', () => {
   describe('#renderTempalte', () => {
     test('renders ejs template with the template variables', () => {
       const info = new FileInfo({
-        templateVariables: {name: 'rendered ejs string'},
+        templateVariables: { name: 'rendered ejs string' },
         ui,
         originalPath,
         mappedPath
@@ -116,6 +148,5 @@ describe('(Model) FileInfo', () => {
       path = '/test/path/file.foo.bar.ejs.html';
       expect(removeEjsExt(path + '.EJS')).toEqual(path);
     });
-
   });
 });
