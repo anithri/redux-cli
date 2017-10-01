@@ -100,4 +100,22 @@ describe('(Model) FileInfo', () => {
       expect(info.renderTemplate()).to.eq(expectedString);
     });
   });
+
+  describe('::removeEjsExt', () => {
+    test('it should not change any path that does not end in ejs', () => {
+      const removeEjsExt = FileInfo.removeEjsExt;
+      let path = '/test/path/file.js';
+      expect(removeEjsExt(path)).toEqual(path);
+      path = '/test/path/file.foo.bar.ejs.html';
+      expect(removeEjsExt(path)).toEqual(path);
+    });
+    test('it should remove the last and only the last ejs', () => {
+      const removeEjsExt = FileInfo.removeEjsExt;
+      let path = '/test/path/file.js';
+      expect(removeEjsExt(path + '.ejs')).toEqual(path);
+      path = '/test/path/file.foo.bar.ejs.html';
+      expect(removeEjsExt(path + '.EJS')).toEqual(path);
+    });
+
+  });
 });

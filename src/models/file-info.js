@@ -8,7 +8,11 @@ class FileInfo {
     this.ui = args.ui;
     this.templateVariables = args.templateVariables; // locals passed to ejs template
     this.originalPath = args.originalPath;           // path to template
-    this.mappedPath = args.mappedPath;               // destination path to be written to
+    this.mappedPath = FileInfo.removeEjsExt(args.mappedPath); // destination path to be written to
+  }
+
+  static removeEjsExt(path) {
+    return path.replace(/\.ejs$/i,'');
   }
 
   writeFile(dryRun) {
