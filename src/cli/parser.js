@@ -4,7 +4,7 @@ const usage = `Usage:
   $0 <command> [arguments] [options]
   $0 help <command>`;
 
-export function getParser() {
+export default function getParser() {
   const parser = yargs();
   return parser
     .usage(usage)
@@ -20,7 +20,3 @@ export function getParser() {
     .epilogue('Documentation: https://github.com/SpencerCDixon/redux-cli')
     .wrap(parser.terminalWidth());
 }
-
-const parser = getParser();
-
-export default parser;
