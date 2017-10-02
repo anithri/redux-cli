@@ -1,6 +1,7 @@
-import ProjectSettings from 'models/project-settings';
+import ProjectSettings, { defaultSettingsPath } from 'models/project-settings';
 import fs from 'fs';
 import config from 'config';
+import path from 'path';
 
 const { basePath } = config;
 const settingsPath = basePath + '/.blueprintrc';
@@ -160,6 +161,26 @@ describe('ProjectSettings', () => {
         basePath + '/test/fixtures/blueprints'
       ];
       expect(blueprintPaths).to.include.members(expectedFiles);
+    });
+  });
+  describe('defaultSettingsPath', () => {
+    test('it should be a string matching /.+/defaultSettings.json', () => {
+      expect(defaultSettingsPath).to.match(/\/.+\/defaultSettings.json/);
+    });
+  });
+  describe('::getDefaultSettings()', () => {
+    test('it returns a hash', () => {
+      const defaultSettings = ProjectSettings.getDefaultSettings();
+      const expectedPath = path.resolve(basePath, 'test/fixtures/defaultSettings.json');
+      const expectedSettings = ProjectSettings.getDefaultSettings(expectedPath);
+      expect(defaultSettings).to.be.an('object');
+      expect(expectedSettings.foo).toEqual(42);
+      expect(expectedSettings.bar).toEqual('arena');
+      expect(expectedSettings.blueprintPaths).to.be.a('array');
+      expect(expectedSettings.blueprintPaths[0]).to.match(/blueprints$/);
+    });
+    test('it raises an error if the file does not exist', () => {
+      expect(() => ProjectSettings.getDefaultSettings('/sds/made/up/path')).toThrow();
     });
   });
 });
