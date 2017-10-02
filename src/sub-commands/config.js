@@ -2,12 +2,14 @@ import prettyjson from 'prettyjson';
 import SubCommand from '../models/sub-command';
 
 class Config extends SubCommand {
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
   }
 
   printUserHelp() {
-    this.ui.write('config command to display current configuration');
+    this.ui.write(
+      'config command to display current configuration'
+    );
   }
 
   run() {

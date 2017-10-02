@@ -5,7 +5,8 @@ const usage = `Usage:
   $0 help <command>`;
 
 export function getParser() {
-  return yargs()
+  const parser = yargs();
+  return parser
     .usage(usage)
     .commandDir('cmds')
     .demandCommand(1, 'Provide a command to run')
@@ -16,7 +17,8 @@ export function getParser() {
     .version()
     .alias('version', 'V')
     .global('version', false)
-    .epilogue('Documentation: https://github.com/SpencerCDixon/redux-cli');
+    .epilogue('Documentation: https://github.com/SpencerCDixon/redux-cli')
+    .wrap(parser.terminalWidth());
 }
 
 const parser = getParser();
