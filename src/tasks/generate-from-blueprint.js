@@ -1,5 +1,4 @@
 import Task from '../models/task';
-import BlueprintCollection from '../models/blueprint-collection';
 
 export default class extends Task {
   constructor(environment) {
