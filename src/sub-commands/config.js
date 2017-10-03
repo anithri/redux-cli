@@ -2,12 +2,16 @@ import prettyjson from 'prettyjson';
 import SubCommand from '../models/sub-command';
 
 class Config extends SubCommand {
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
   }
 
   printUserHelp() {
     this.ui.write('config command to display current configuration');
+  }
+
+  dontSkip(type) {
+    return !this.settings.settings[`skip-${type}`];
   }
 
   run() {
@@ -15,16 +19,34 @@ class Config extends SubCommand {
     delete finalConfig.configs;
     delete finalConfig.allConfigs;
     delete finalConfig['_'];
-    this.ui.write(this.cliLogo() + '\n');
-    this.ui.writeInfo('Config Files');
-    console.log(prettyjson.render(this.settings.settings.configs, {}, 8));
-    // this.settings.settings.configs.forEach(configFile => {this.ui.writeInfo(`  * ${configFile}`)})
-    this.ui.writeInfo('Config Data');
-    console.log(prettyjson.render(finalConfig, {}, 10));
-    this.ui.writeInfo('Blueprint Paths');
-    console.log(prettyjson.render(this.settings.blueprints.searchPaths, {}, 8));
-    this.ui.writeInfo('Blueprints');
-    console.log(prettyjson.render(this.settings.blueprints.allNames(), {}, 8));
+    if (this.dontSkip('logo')) {
+      this.ui.write(this.cliLogo() + '\n');
+    }
+    if (this.dontSkip('config-files')) {
+      this.ui.writeInfo('Config Files');
+      this.ui.writeLine(
+        prettyjson.render(this.settings.settings.configs, {}, 8)
+      );
+    }
+
+    if (this.dontSkip('config-data')) {
+      this.ui.writeInfo('Config Data');
+      this.ui.writeLine(prettyjson.render(finalConfig, {}, 10));
+    }
+
+    if (this.dontSkip('blueprint-paths')) {
+      this.ui.writeInfo('Blueprint Paths');
+      this.ui.writeLine(
+        prettyjson.render(this.settings.blueprints.searchPaths, {}, 8)
+      );
+    }
+
+    if (this.dontSkip('blueprints')) {
+      this.ui.writeInfo('Blueprints');
+      this.ui.writeLine(
+        prettyjson.render(this.settings.blueprints.allNames(), {}, 8)
+      );
+    }
   }
 }
 

@@ -14,10 +14,16 @@ describe('(CLI) Config', () => {
 
   describe('--help', () => {
     test('shows Usage', done => {
+      parser.$0 = 'bp';
       parser.parse('help config', (err, argv, output) => {
         expect(err).to.be.undefined;
         expect(output).to.include('Usage:');
         expect(output).to.match(lineRegEx('bp config'));
+        expect(output).to.include('--skip-logo');
+        expect(output).to.include('--skip-config-files');
+        expect(output).to.include('--skip-config-data');
+        expect(output).to.include('--skip-blueprint-paths');
+        expect(output).to.include('--skip-blueprints');
         done();
       });
     });
