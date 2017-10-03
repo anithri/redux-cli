@@ -1,8 +1,4 @@
-import {
-  which,
-  rm,
-  exec
-} from 'shelljs';
+import { which, rm, exec } from 'shelljs';
 import SubCommand from '../models/sub-command';
 import CreateAndStepIntoDirectory from '../tasks/create-and-step-into-directory';
 import GitPull from '../tasks/git-pull';

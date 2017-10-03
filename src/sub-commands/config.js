@@ -7,9 +7,7 @@ class Config extends SubCommand {
   }
 
   printUserHelp() {
-    this.ui.write(
-      'config command to display current configuration'
-    );
+    this.ui.write('config command to display current configuration');
   }
 
   run() {

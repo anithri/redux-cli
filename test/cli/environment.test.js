@@ -15,7 +15,7 @@ describe('(CLI) Environment', () => {
       const env = getEnvironment();
       expect(env.ui).toBeInstanceOf(UI);
       expect(env.settings).toBeInstanceOf(ProjectSettings);
-    })
+    });
     it('returns a singleton', () => {
       const env1 = getEnvironment();
       const env2 = getEnvironment();
