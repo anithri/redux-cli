@@ -60,7 +60,7 @@ describe('ProjectSettings', () => {
 
     it('collects all blueprints into an array of arrays', () => {
       // How many do we have before
-      const baseline = (new ProjectSettings()).blueprintChunks.length;
+      const baseline = new ProjectSettings().blueprintChunks.length;
 
       process.env['blueprint_config'] = 'test/fixtures/env.blueprintrc';
       const fakeArgv = { config: 'test/fixtures/argv.blueprintrc' };
@@ -171,7 +171,10 @@ describe('ProjectSettings', () => {
   describe('::getDefaultSettings()', () => {
     test('it returns a hash', () => {
       const defaultSettings = ProjectSettings.getDefaultSettings();
-      const expectedPath = path.resolve(basePath, 'test/fixtures/defaultSettings.json');
+      const expectedPath = path.resolve(
+        basePath,
+        'test/fixtures/defaultSettings.json'
+      );
       const expectedSettings = ProjectSettings.getDefaultSettings(expectedPath);
       expect(defaultSettings).to.be.an('object');
       expect(expectedSettings.foo).toEqual(42);
@@ -180,7 +183,9 @@ describe('ProjectSettings', () => {
       expect(expectedSettings.blueprintPaths[0]).to.match(/blueprints$/);
     });
     test('it raises an error if the file does not exist', () => {
-      expect(() => ProjectSettings.getDefaultSettings('/sds/made/up/path')).toThrow();
+      expect(() =>
+        ProjectSettings.getDefaultSettings('/sds/made/up/path')
+      ).toThrow();
     });
   });
 });

@@ -11,8 +11,14 @@ import BlueprintCollection, {
   parseBlueprintSetting
 } from './blueprint-collection';
 
-export const defaultSettingsPath = path.resolve(__dirname, '../../templates/defaultSettings.json');
-export const defaultBlueprintsPath = path.resolve(__dirname, '../../blueprints');
+export const defaultSettingsPath = path.resolve(
+  __dirname,
+  '../../templates/defaultSettings.json'
+);
+export const defaultBlueprintsPath = path.resolve(
+  __dirname,
+  '../../blueprints'
+);
 export default class ProjectSettings {
   // public & tested - maintain in 2.0
   constructor(defaultSettings = {}, args = null) {
@@ -97,7 +103,9 @@ export default class ProjectSettings {
     if (fs.existsSync(file)) {
       const raw = fs.readFileSync(file, 'utf8');
       const settings = JSON.parse(raw);
-      settings.blueprintPaths = settings.blueprintPaths ? settings.blueprintPaths : [];
+      settings.blueprintPaths = settings.blueprintPaths
+        ? settings.blueprintPaths
+        : [];
       settings.blueprintPaths.push(defaultBlueprintsPath);
       return settings;
     } else {
