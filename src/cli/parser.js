@@ -10,7 +10,7 @@ export function getParser() {
     .commandDir('cmds')
     .demandCommand(1, 'Provide a command to run')
     .recommendCommands()
-    .strict()
+    // .strict()
     .help()
     .alias('help', 'h')
     .version()

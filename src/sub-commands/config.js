@@ -15,6 +15,7 @@ class Config extends SubCommand {
   }
 
   run() {
+    console.log(this.settings)
     const finalConfig = Object.assign({}, this.settings.settings);
     delete finalConfig.configs;
     delete finalConfig.allConfigs;

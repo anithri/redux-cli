@@ -13,33 +13,40 @@ module.exports = {
 };
 
 const defineBuilder = yargs => {
-  return yargs.options({
-    'skip-logo': {
-      alias: 'L',
-      describe: "Don' show logo",
-      type: 'boolean'
-    },
+  return yargs.config({wooticus: {}})
+    .options({
+      'skip-logo': {
+        alias: 'L',
+        describe: "Don' show logo",
+        type: 'boolean',
+        global: true
+      },
+      'wooticus-prime': {
+        alias: 'woot',
+        type: 'string'
+      },
 
-    'skip-blueprints': {
-      alias: 'B',
-      describe: "Don't show blueprints",
-      type: 'boolean'
-    },
-    'skip-blueprint-paths': {
-      alias: 'P',
-      describe: "Don't show blueprint paths",
-      type: 'boolean'
-    },
-    'skip-config-data': {
-      alias: 'D',
-      describe: "Don't show config data",
-      type: 'boolean'
-    },
+      'skip-blueprints': {
+        alias: 'B',
+        describe: "Don't show blueprints",
+        type: 'boolean'
+      },
+      'skip-blueprint-paths': {
+        alias: 'P',
+        describe: "Don't show blueprint paths",
+        type: 'boolean'
+      },
+      'skip-config-data': {
+        alias: 'D',
+        describe: "Don't show config data",
+        type: 'boolean'
+      },
 
-    'skip-config-files': {
-      alias: 'F',
-      describe: "Don't show config files",
-      type: 'boolean'
-    }
-  });
+      'skip-config-files': {
+        alias: 'F',
+        describe: "Don't show config files",
+        type: 'boolean'
+      }
+    })
+    .describe('woot', 'Wooticus Prime!');
 };
