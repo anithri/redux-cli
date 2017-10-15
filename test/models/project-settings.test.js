@@ -148,6 +148,7 @@ describe('ProjectSettings', () => {
       expect(settings.configFiles()).to.include.members(expectedFiles);
     });
   });
+
   describe('#blueprints', () => {
     it('returns a BlueprintCollection', () => {
       process.env['blueprint_config'] = 'test/fixtures/env.blueprintrc';
