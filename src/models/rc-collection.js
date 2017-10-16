@@ -7,9 +7,18 @@ class RcCollection {
   constructor(args = {}) {
     this.fs = args.fs || fs;
     this.collector = args.collector || this.collect;
-    this.rawCollection = new rcCollectionRaw(args);
+    this.rawCollection = args.rawCollection || this.rawCollection(args);
     this.files = args.files || this.rawCollection.files();
-    this.collection = this.collector(this.files);
+    this.collection = args.collection || this.collector(this.files);
+  }
+
+  data(defaults = {}) {
+    if (this.assembledData) return this.assembledData;
+    this.assembledData = this.assemble(defaults);
+  }
+
+  assemble(defaults = {}) {
+
   }
 
   collect(files) {
@@ -18,7 +27,6 @@ class RcCollection {
     //   2. store result in collection keyed by the path
     return _reduce(files, (all, file) => {
       all[file] = this.collectFile(file);
-      all[file] = data;
       return all;
     }, {});
   }
@@ -38,6 +46,10 @@ class RcCollection {
       errData = {message: err.message, name: err.name};
       return {error: errData};
     }
+  }
+
+  rawCollection(args) {
+    new rcCollectionRaw(args);
   }
 }
 

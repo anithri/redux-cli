@@ -9,43 +9,37 @@ const fakePath = {
 };
 const fakeFindUp = path => `findUp/${path}`;
 
-const allFakeOpts = {
-  env: 'fake',
-  fs: 'fake',
-  rc: 'fake',
-  cwd: 'fake',
-  home: 'fake',
-  path: 'fake',
-  dotRc: 'fake',
-  appData: 'fake',
-  cliFiles: 'fake',
-  envFiles: 'fake',
-  platform: 'fake',
-  userFiles: 'fake',
-  systemFiles: 'fake',
-  localAppData: 'fake',
-  projectFiles: 'fake',
-  xdgConfigDirs: 'fake',
-  xdgConfigHome: 'fake'
-};
 
 describe('(Models) RcCollection', () => {
-  let rawRcs, fakeRcs;
+  describe('Completely fakeable traits', () => {
+    test('', () => {
+      const fakeArgs = {
+        fs: 'fake',
+        collector: 'fake',
+        rawCollection: 'fake',
+        files: 'fake',
+        collected: 'fake'
+      };
 
-  beforeEach(() => {
+      const testCollection = new RcCollection(fakeArgs);
+      expect(testCollection.fs).toEqual('fake');
+      expect(testCollection.collector).toEqual('fake');
+      expect(testCollection.rawCollection).toEqual('fake');
+      expect(testCollection.files).toEqual('fake');
+      expect(testCollection.collected).toEqual('fake');
+    });
   });
 
   describe('#collectFile(file)', () => {
     test('it parse contents of file as JSON', () => {
       const fakeFs = {
-        existsSync: () => true,
-        statSync: () => ({ isFile: () => true }),
         readFileSync: (path) => (`{"path":"${path}"}`)
       };
       const testArgs = {
         fs: fakeFs,
-        collector: () => {},
-        files: [],
+        collector: () => {
+        },
+        files: []
       };
       const testCollection = new RcCollection(testArgs);
       const testData = testCollection.collectFile('fakeFile');
@@ -53,14 +47,13 @@ describe('(Models) RcCollection', () => {
     });
     test('it removes comments from file before parsing as JSON', () => {
       const fakeFs = {
-        existsSync: () => true,
-        statSync: () => ({ isFile: () => true }),
         readFileSync: (path) => (`{\n//test one\n/* test \n two \n */\n"path":"${path}"}`)
       };
       const testArgs = {
         fs: fakeFs,
-        collector: () => {},
-        files: [],
+        collector: () => {
+        },
+        files: []
       };
       const testCollection = new RcCollection(testArgs);
       const testData = testCollection.collectFile('fakeFile');
@@ -68,8 +61,9 @@ describe('(Models) RcCollection', () => {
     });
     test('it reads file as json from path', () => {
       const testArgs = {
-        collector: () => {},
-        files: [],
+        collector: () => {
+        },
+        files: []
       };
       const testCollection = new RcCollection(testArgs);
       const testData = testCollection.collectFile('test/fixtures/collectFileTest.json');
@@ -81,7 +75,46 @@ describe('(Models) RcCollection', () => {
     });
   });
 
+  describe('#collector', () => {
+    test('it defaults to #collect()', () => {
+      const testArgs = {
+        files: []
+      };
+      const testCollection = new RcCollection(testArgs);
+      expect(testCollection).to.respondTo('collector');
+
+    });
+  });
+
   describe('#collect(files)', () => {
+    test('it returns a empty object if called with no files ', () => {
+      const testArgs = {
+        files: [],
+        collector: (files) => (files)
+      };
+      const testCollection = new RcCollection(testArgs);
+      const data = testCollection.collect([]);
+      expect(data).toEqual({});
+    });
+
+    test('it returns an object with files as keys', () => {
+      const fakeFs = {
+        readFileSync: (path) => (`{"path":"${path}"}`)
+      };
+      const testArgs = {
+        fs: fakeFs,
+        files: ['Batmobile', 'UtilityBelt']
+      };
+      const testCollection = new RcCollection(testArgs);
+      const data = testCollection.collected;
+      expect(data).toEqual({
+        Batmobile: {path: 'Batmobile'},
+        UtilityBelt: {path: 'UtilityBelt'}
+      });
+    });
+  });
+
+  describe('#', () => {
     test('', () => {
     });
   });
