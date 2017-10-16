@@ -9,7 +9,6 @@ const fakePath = {
 };
 const fakeFindUp = path => `findUp/${path}`;
 
-
 describe('(Models) RcCollection', () => {
   describe('Completely fakeable traits', () => {
     test('', () => {
@@ -38,40 +37,40 @@ describe('(Models) RcCollection', () => {
   describe('#collectFile(file)', () => {
     test('it parse contents of file as JSON', () => {
       const fakeFs = {
-        readFileSync: (path) => (`{"path":"${path}"}`)
+        readFileSync: path => `{"path":"${path}"}`
       };
       const testArgs = {
         fs: fakeFs,
-        collector: () => {
-        },
+        collector: () => {},
         files: []
       };
       const testCollection = new RcCollection(testArgs);
       const testData = testCollection.collectFile('fakeFile');
-      expect(testData).toEqual({path: 'fakeFile'});
+      expect(testData).toEqual({ path: 'fakeFile' });
     });
     test('it removes comments from file before parsing as JSON', () => {
       const fakeFs = {
-        readFileSync: (path) => (`{\n//test one\n/* test \n two \n */\n"path":"${path}"}`)
+        readFileSync: path =>
+          `{\n//test one\n/* test \n two \n */\n"path":"${path}"}`
       };
       const testArgs = {
         fs: fakeFs,
-        collector: () => {
-        },
+        collector: () => {},
         files: []
       };
       const testCollection = new RcCollection(testArgs);
       const testData = testCollection.collectFile('fakeFile');
-      expect(testData).toEqual({path: 'fakeFile'});
+      expect(testData).toEqual({ path: 'fakeFile' });
     });
     test('it reads file as json from path', () => {
       const testArgs = {
-        collector: () => {
-        },
+        collector: () => {},
         files: []
       };
       const testCollection = new RcCollection(testArgs);
-      const testData = testCollection.collectFile('test/fixtures/collectFileTest.json');
+      const testData = testCollection.collectFile(
+        'test/fixtures/collectFileTest.json'
+      );
       expect(testData.path).toEqual('test/fixtures/collectFileTest.json');
       expect(testData.batman[1]).toEqual('Dark Knight');
     });
@@ -104,7 +103,7 @@ describe('(Models) RcCollection', () => {
     test('it returns a empty object if called with no files ', () => {
       const testArgs = {
         files: [],
-        collector: (files) => (files)
+        collector: files => files
       };
       const testCollection = new RcCollection(testArgs);
       const data = testCollection.collectAll([]);
@@ -113,7 +112,7 @@ describe('(Models) RcCollection', () => {
 
     test('it returns an object with files as keys', () => {
       const fakeFs = {
-        readFileSync: (path) => (`{"path":"${path}"}`)
+        readFileSync: path => `{"path":"${path}"}`
       };
       const testArgs = {
         fs: fakeFs,
@@ -122,8 +121,8 @@ describe('(Models) RcCollection', () => {
       const testCollection = new RcCollection(testArgs);
       const data = testCollection.collection;
       expect(data).toEqual({
-        Batmobile: {path: 'Batmobile'},
-        UtilityBelt: {path: 'UtilityBelt'}
+        Batmobile: { path: 'Batmobile' },
+        UtilityBelt: { path: 'UtilityBelt' }
       });
     });
   });
@@ -133,7 +132,7 @@ describe('(Models) RcCollection', () => {
       const testArgs = {
         files: []
       };
-      const defaults = {alfred: 'Pennyworth'};
+      const defaults = { alfred: 'Pennyworth' };
       const testCollection = new RcCollection(testArgs);
       const data = testCollection.assembleAll([], {}, defaults);
 
@@ -148,7 +147,7 @@ describe('(Models) RcCollection', () => {
       const collection = {
         alfred: {
           name: 'Alfred Pennyworth',
-          jobs: ['Butler', 'Medic'],
+          jobs: ['Butler', 'Medic']
         },
         lucius: {
           name: 'Lucius Fox',
@@ -161,7 +160,11 @@ describe('(Models) RcCollection', () => {
         name: 'Ace'
       };
       const testCollection = new RcCollection(testArgs);
-      const data = testCollection.assembleAll(['alfred', 'lucius'], collection, defaults);
+      const data = testCollection.assembleAll(
+        ['alfred', 'lucius'],
+        collection,
+        defaults
+      );
       const expectedData = {
         position: 'Ally',
         name: 'Alfred Pennyworth',
@@ -174,6 +177,5 @@ describe('(Models) RcCollection', () => {
 
       expect(data).toEqual(expectedData);
     });
-
   });
 });

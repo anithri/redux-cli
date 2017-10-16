@@ -18,11 +18,11 @@ class RcCollection {
 
   data(defaults = {}) {
     if (this.assembledData) return this.assembledData;
-    return this.assembledData = this.assembler(
+    return (this.assembledData = this.assembler(
       this.files,
       this.collection,
       defaults
-    );
+    ));
   }
 
   arrayMerge(destArr, srcArr, options) {
@@ -34,7 +34,10 @@ class RcCollection {
     const all = _reduceRight(
       order,
       (all, name) => {
-        return merge(all, collected[name], {name, arrayMerge: this.arrayMerge});
+        return merge(all, collected[name], {
+          name,
+          arrayMerge: this.arrayMerge
+        });
       },
       defaults
     );
@@ -71,11 +74,10 @@ class RcCollection {
       // continue processing? cli option to (en|dis)able?
       // log/trace/debug?
       // and *ugh* testing
-      errData = {message: err.message, name: err.name};
-      return {error: errData};
+      errData = { message: err.message, name: err.name };
+      return { error: errData };
     }
-
   }
-};
+}
 
 export default RcCollection;

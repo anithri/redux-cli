@@ -8,11 +8,11 @@
      consectetur adipiscing elit
      sed do eiusmod
   */
-  "path": "test/fixtures/collectFileTest.json",
+  "path": "test/fixtures/collectFileTest.json", /* inline */
   // single line comments
   "batman": [
     "Caped Crusader",
     "Dark Knight"
-  ],
+  ] /* in line */,
   "last": "Line has Comments"
 }

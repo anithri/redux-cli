@@ -139,7 +139,6 @@ describe('(Models) RcCollectionRaw', () => {
     });
   });
 
-
   describe('envFiles', () => {
     test('it defaults to empty array', () => {
       const testOpts = {
