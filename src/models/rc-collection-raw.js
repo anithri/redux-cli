@@ -43,7 +43,7 @@ class RcCollectionRaw {
     ]);
   }
 
-  paths() {
+  files() {
     return _filter(this.rawPaths(), this.fileExists);
   }
 

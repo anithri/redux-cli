@@ -303,7 +303,7 @@ describe('(Models) RcCollectionRaw', () => {
         platform: 'linux',
         fs: fakeFs
       };
-      const expectedPaths = [
+      const expectedFiles = [
         'TEST/Batman',
         // 'TEST/Robin',
         'findUp/.blueprintrc',
@@ -316,7 +316,7 @@ describe('(Models) RcCollectionRaw', () => {
         // 'Riddler/blueprintrc'
       ];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.paths()).toEqual(expectedPaths);
+      expect(testRcs.files()).toEqual(expectedFiles);
     });
   });
 

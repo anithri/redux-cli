@@ -1,0 +1,18 @@
+// single line comments
+/* lorem ipsum dolor sit amet
+   consectetur adipiscing elit
+   sed do eiusmod
+*/
+{
+  /* lorem ipsum dolor sit amet
+     consectetur adipiscing elit
+     sed do eiusmod
+  */
+  "path": "test/fixtures/collectFileTest.json",
+  // single line comments
+  "batman": [
+    "Caped Crusader",
+    "Dark Knight"
+  ],
+  "last": "Line has Comments"
+}
