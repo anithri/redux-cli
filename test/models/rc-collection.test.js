@@ -18,15 +18,20 @@ describe('(Models) RcCollection', () => {
         collector: 'fake',
         rawCollection: 'fake',
         files: 'fake',
-        collected: 'fake'
+        collected: 'fake',
+        merge: 'fake',
+        collection: 'fake',
+        assembler: 'fake'
       };
 
       const testCollection = new RcCollection(fakeArgs);
       expect(testCollection.fs).toEqual('fake');
+      expect(testCollection.merge).toEqual('fake');
       expect(testCollection.collector).toEqual('fake');
       expect(testCollection.rawCollection).toEqual('fake');
       expect(testCollection.files).toEqual('fake');
-      expect(testCollection.collected).toEqual('fake');
+      expect(testCollection.collection).toEqual('fake');
+      expect(testCollection.assembler).toEqual('fake');
     });
   });
 
@@ -76,24 +81,33 @@ describe('(Models) RcCollection', () => {
   });
 
   describe('#collector', () => {
-    test('it defaults to #collect()', () => {
+    test('it defaults to #collectAll()', () => {
       const testArgs = {
         files: []
       };
       const testCollection = new RcCollection(testArgs);
       expect(testCollection).to.respondTo('collector');
-
     });
   });
 
-  describe('#collect(files)', () => {
+  describe('#assembler', () => {
+    test('it defaults to #assembleAll()', () => {
+      const testArgs = {
+        files: []
+      };
+      const testCollection = new RcCollection(testArgs);
+      expect(testCollection).to.respondTo('assembler');
+    });
+  });
+
+  describe('#collectAll(files)', () => {
     test('it returns a empty object if called with no files ', () => {
       const testArgs = {
         files: [],
         collector: (files) => (files)
       };
       const testCollection = new RcCollection(testArgs);
-      const data = testCollection.collect([]);
+      const data = testCollection.collectAll([]);
       expect(data).toEqual({});
     });
 
@@ -106,7 +120,7 @@ describe('(Models) RcCollection', () => {
         files: ['Batmobile', 'UtilityBelt']
       };
       const testCollection = new RcCollection(testArgs);
-      const data = testCollection.collected;
+      const data = testCollection.collection;
       expect(data).toEqual({
         Batmobile: {path: 'Batmobile'},
         UtilityBelt: {path: 'UtilityBelt'}
@@ -114,8 +128,52 @@ describe('(Models) RcCollection', () => {
     });
   });
 
-  describe('#', () => {
-    test('', () => {
+  describe('#assembleAll(order, collection, defaults = {})', () => {
+    test('it creates an assembly object on returned data ', () => {
+      const testArgs = {
+        files: []
+      };
+      const defaults = {alfred: 'Pennyworth'};
+      const testCollection = new RcCollection(testArgs);
+      const data = testCollection.assembleAll([], {}, defaults);
+
+      expect(data.alfred).toEqual('Pennyworth');
+      expect(data.assembly.configFiles).toEqual([]);
     });
+
+    test('it creates an assembly object on returned data ', () => {
+      const testArgs = {
+        files: []
+      };
+      const collection = {
+        alfred: {
+          name: 'Alfred Pennyworth',
+          jobs: ['Butler', 'Medic'],
+        },
+        lucius: {
+          name: 'Lucius Fox',
+          jobs: ['Industrialist', 'Gadgeteer'],
+          location: 'Wayne Tower'
+        }
+      };
+      const defaults = {
+        position: 'Ally',
+        name: 'Ace'
+      };
+      const testCollection = new RcCollection(testArgs);
+      const data = testCollection.assembleAll(['alfred', 'lucius'], collection, defaults);
+      const expectedData = {
+        position: 'Ally',
+        name: 'Alfred Pennyworth',
+        location: 'Wayne Tower',
+        jobs: ['Butler', 'Medic', 'Industrialist', 'Gadgeteer'],
+        assembly: {
+          configFiles: ['alfred', 'lucius']
+        }
+      };
+
+      expect(data).toEqual(expectedData);
+    });
+
   });
 });

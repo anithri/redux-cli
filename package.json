@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.1",
+    "deepmerge": "^2.0.0",
     "denodeify": "^1.2.1",
     "ejs": "^2.4.1",
     "elegant-spinner": "^1.0.1",
