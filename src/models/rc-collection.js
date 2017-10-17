@@ -3,7 +3,7 @@ import _reduceRight from 'lodash/reduceRight';
 import _reduce from 'lodash/reduce';
 import stripJsonComments from 'strip-json-comments';
 import rcCollectionRaw from './rc-collection-raw';
-import mergeData from 'util/mergers';
+import mergeData from '../util/mergers';
 
 class RcCollection {
   constructor(args = {}) {
@@ -52,12 +52,17 @@ class RcCollection {
       },
       {}
     );
+  };
+
+  adjustPaths(obj, file) {
+    return obj;
   }
 
   collectFile(file) {
     try {
       const contents = this.fs.readFileSync(file);
       const obj = JSON.parse(stripJsonComments(contents.toString()));
+      const norm = this.adjustPaths(obj, file);
       this.rcFiles.push(file);
       return obj;
     } catch (err) {

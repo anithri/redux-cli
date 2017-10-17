@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import mergeData from 'util/mergers';
+import mergeData from '../util/mergers';
 
 class RcData {
   constructor(data, merger = mergeData) {

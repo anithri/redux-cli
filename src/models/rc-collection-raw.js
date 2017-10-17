@@ -4,6 +4,7 @@ import _filter from 'lodash/filter';
 import findUp from 'find-up';
 import fs from 'fs';
 import path from 'path';
+import {resolvePath} from '../util/mergers';
 
 class RcCollectionRaw {
   constructor(opts = {}) {
@@ -26,7 +27,7 @@ class RcCollectionRaw {
     this.userFiles = opts.userFiles || [];
     this.systemFiles = opts.systemFiles || [];
     this.localAppData = opts.localAppData || this.env.LOCALAPPDATA;
-    this.projectFiles = opts.projectFiles || [this.findUp(this.dotRc)];
+    this.projectFiles = opts.projectFiles || this.findProjectFiles();
     this.xdgConfigDirs =
       opts.xdgConfigDirs || (this.env.XDG_CONFIG_DIRS || '/etc/xdg').split(':');
     this.xdgConfigHome = opts.xdgConfigHome || this.env.XDG_CONFIG_HOME;
@@ -35,12 +36,16 @@ class RcCollectionRaw {
 
   rawPaths() {
     return _uniq([
-      ...this.adjustedPaths(this.cliFiles),
-      ...this.adjustedPaths(this.envFiles),
+      ...this.adjustPaths(this.cliFiles),
+      ...this.adjustPaths(this.envFiles),
       ...this.projectFiles,
       ...this.userFiles,
       ...this.systemFiles
     ]);
+  }
+
+  adjustPaths(files) {
+    return resolvePath(files, this.home, this.cwd, this.path);
   }
 
   files() {
@@ -51,22 +56,11 @@ class RcCollectionRaw {
     return this.fs.existsSync(file) && this.fs.statSync(file).isFile();
   }
 
-  normalizePaths(orig) {
-    if (Array.isArray(orig)) return orig;
-    if (typeof orig === 'string') return orig.split(':');
-    return [];
-  }
-
-  adjustedPaths(rawPaths) {
-    const paths = this.normalizePaths(rawPaths);
-    const pathEx = this.path;
-    return _map(paths, p => {
-      if (p[0] === '~') {
-        return pathEx.resolve(this.home, p.slice(1));
-      } else {
-        return pathEx.resolve(this.cwd, p);
-      }
-    });
+  findProjectFiles() {
+    return [
+      `./${this.dotRc}`,
+      this.findUp(this.dotRc)
+    ];
   }
 
   handleOS() {

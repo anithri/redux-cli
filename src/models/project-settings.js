@@ -2,12 +2,14 @@ import _get from 'lodash/get';
 
 class ProjectSettings {
   // public & tested - maintain in 2.0
-  constructor(rcCollection, rc, bp, ui) {
-    this.rcCollection = rcCollection;
+  constructor(collection, rc, bp, ui) {
+    this.collection = collection;
     this.rc = rc;
     this.bp = bp;
     this.ui = ui;
   }
+
+  get blueprints() { return this.bp; }
 
   all(defaults = {}) {
     return this.rc.with(defaults);

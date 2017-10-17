@@ -211,7 +211,7 @@ describe('(Models) RcCollectionRaw', () => {
     test('', () => {
       const testOpts = { findUp: fakeFindUp };
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.projectFiles).toEqual(['findUp/.blueprintrc']);
+      expect(testRcs.projectFiles).toEqual(['./.blueprintrc','findUp/.blueprintrc']);
     });
   });
 
@@ -294,7 +294,6 @@ describe('(Models) RcCollectionRaw', () => {
           XDG_CONFIG_DIRS: 'Joker:Riddler'
         },
         cwd: 'TEST',
-        path: fakePath,
         findUp: fakeFindUp,
         home: 'userHome',
         xdgConfigHome: 'xdgConfigHome',
@@ -305,14 +304,15 @@ describe('(Models) RcCollectionRaw', () => {
       const expectedFiles = [
         'TEST/Batman',
         // 'TEST/Robin',
-        'findUp/.blueprintrc',
-        // 'userHome/.blueprintrc',
-        'userHome/xdgConfigHome/.blueprintrc',
-        // 'userHome/xdgConfigHome/blueprintrc',
-        'userHome/xdgConfigHome/blueprint/blueprintrc',
-        // 'userHome/xdgConfigHome/blueprint/config',
-        'Joker/blueprintrc'
-        // 'Riddler/blueprintrc'
+        './.blueprintrc',
+        // 'findUp/.blueprintrc',
+        'userHome/.blueprintrc',
+        // 'userHome/xdgConfigHome/.blueprintrc',
+        'userHome/xdgConfigHome/blueprintrc',
+        // 'userHome/xdgConfigHome/blueprint/blueprintrc',
+        'userHome/xdgConfigHome/blueprint/config',
+        // 'Joker/blueprintrc'
+        'Riddler/blueprintrc'
       ];
       const testRcs = new RcCollectionRaw(testOpts);
       expect(testRcs.files()).toEqual(expectedFiles);
@@ -362,8 +362,8 @@ describe('(Models) RcCollectionRaw', () => {
       let paths;
       const expectedPaths = [];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths()).toEqual(expectedPaths);
-      expect(testRcs.adjustedPaths(paths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths()).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(paths)).toEqual(expectedPaths);
     });
     test('returns original array if passed an array', () => {
       const testOpts = {
@@ -373,7 +373,7 @@ describe('(Models) RcCollectionRaw', () => {
       const paths = ['Asylum'];
       const expectedPaths = ['/Arkham/Asylum'];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(paths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(paths)).toEqual(expectedPaths);
     });
     test('returns an array containing string without a ":"', () => {
       const testOpts = {
@@ -383,7 +383,7 @@ describe('(Models) RcCollectionRaw', () => {
       const paths = 'PoliceDepartment';
       const expectedPaths = ['/GothamCity/PoliceDepartment'];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(paths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(paths)).toEqual(expectedPaths);
     });
     test('returns an array containing strings separated by ":"', () => {
       const testOpts = {
@@ -393,7 +393,7 @@ describe('(Models) RcCollectionRaw', () => {
       const paths = 'Batcave:Stately';
       const expectedPaths = ['/WayneManor/Batcave', '/WayneManor/Stately'];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(paths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(paths)).toEqual(expectedPaths);
     });
     test('returns [] if passed anything else', () => {
       const testOpts = {
@@ -403,11 +403,11 @@ describe('(Models) RcCollectionRaw', () => {
       const paths = 2;
       const expectedPaths = [];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(paths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(paths)).toEqual(expectedPaths);
     });
   });
 
-  describe('#adjustedPaths', () => {
+  describe('#adjustPaths', () => {
     test('it returns files unchanged without leading ~', () => {
       const testOpts = {
         cwd: '/TEST',
@@ -416,7 +416,7 @@ describe('(Models) RcCollectionRaw', () => {
       const origPaths = 'Batman:Robin';
       const expectedPaths = ['/TEST/Batman', '/TEST/Robin'];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(origPaths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(origPaths)).toEqual(expectedPaths);
     });
 
     test('it returns files with leading ~ with home path', () => {
@@ -428,7 +428,7 @@ describe('(Models) RcCollectionRaw', () => {
       const origPaths = '~Batman:Robin';
       const expectedPaths = ['/HOME/Batman', '/TEST/Robin'];
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.adjustedPaths(origPaths)).toEqual(expectedPaths);
+      expect(testRcs.adjustPaths(origPaths)).toEqual(expectedPaths);
     });
   });
 

@@ -5,5 +5,5 @@
   "dumbPath": "component",
   "fileCasing": "default",
   "location": "project",
-  "blueprints": true
+  "blueprintPaths": ['./blueprints'] 
 }
