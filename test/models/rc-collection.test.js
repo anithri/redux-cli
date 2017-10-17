@@ -18,14 +18,14 @@ describe('(Models) RcCollection', () => {
         rawCollection: 'fake',
         files: 'fake',
         collected: 'fake',
-        merge: 'fake',
+        mergeData: 'fake',
         collection: 'fake',
         assembler: 'fake'
       };
 
       const testCollection = new RcCollection(fakeArgs);
       expect(testCollection.fs).toEqual('fake');
-      expect(testCollection.merge).toEqual('fake');
+      expect(testCollection.mergeData).toEqual('fake');
       expect(testCollection.collector).toEqual('fake');
       expect(testCollection.rawCollection).toEqual('fake');
       expect(testCollection.files).toEqual('fake');
@@ -74,7 +74,7 @@ describe('(Models) RcCollection', () => {
       expect(testData.path).toEqual('test/fixtures/collectFileTest.json');
       expect(testData.batman[1]).toEqual('Dark Knight');
     });
-    xtest('it copes with errors', () => {
+    test('it copes with errors', () => {
       // TODO after strategy figured out
     });
   });

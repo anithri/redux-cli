@@ -3,15 +3,17 @@ import _reduceRight from 'lodash/reduceRight';
 import _reduce from 'lodash/reduce';
 import stripJsonComments from 'strip-json-comments';
 import rcCollectionRaw from './rc-collection-raw';
-import merge from 'deepmerge';
+import mergeData from 'util/mergers';
 
 class RcCollection {
   constructor(args = {}) {
     this.fs = args.fs || fs;
-    this.merge = args.merge || merge;
+    this.mergeData = args.mergeData || mergeData;
     this.collector = args.collector || this.collectAll;
     this.rawCollection = args.rawCollection || new rcCollectionRaw(args);
     this.files = args.files || this.rawCollection.files();
+    this.defaults = args.defaults || {};
+    this.rcFiles = [];
     this.collection = args.collection || this.collector(this.files);
     this.assembler = args.assembler || this.assembleAll;
   }
@@ -25,27 +27,17 @@ class RcCollection {
     ));
   }
 
-  arrayMerge(destArr, srcArr, options) {
-    destArr.unshift(...srcArr);
-    return destArr;
-  }
-
   assembleAll(order, collected, defaults) {
-    const all = _reduceRight(
+    const assembled = _reduceRight(
       order,
-      (all, name) => {
-        return merge(all, collected[name], {
-          name,
-          arrayMerge: this.arrayMerge
-        });
-      },
+      (all, name) => mergeData(all, collected[name]),
       defaults
     );
-    all.assembly = {
+    assembled.assembly = {
       configFiles: order
     };
 
-    return all;
+    return assembled;
   }
 
   collectAll(files) {
@@ -63,10 +55,11 @@ class RcCollection {
   }
 
   collectFile(file) {
-    let contents, errData;
     try {
-      contents = this.fs.readFileSync(file);
-      return JSON.parse(stripJsonComments(contents.toString()));
+      const contents = this.fs.readFileSync(file);
+      const obj = JSON.parse(stripJsonComments(contents.toString()));
+      this.rcFiles.push(file);
+      return obj;
     } catch (err) {
       // do something here I'm too lazy atm to figure out
       // where should a file read or json parse error be handled?
@@ -74,8 +67,8 @@ class RcCollection {
       // continue processing? cli option to (en|dis)able?
       // log/trace/debug?
       // and *ugh* testing
-      errData = { message: err.message, name: err.name };
-      return { error: errData };
+      const errData = { message: err.message, name: err.name };
+      return { error: errData, stack: err.stack };
     }
   }
 }

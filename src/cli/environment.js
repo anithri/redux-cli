@@ -1,15 +1,20 @@
 import ProjectSettings from '../models/project-settings';
 import UI from '../models/ui';
+import RcCollection from '../models/rc-collection';
+import RcData from '../models/rc-data';
 
 function makeGetEnvironment() {
   let environment;
 
   return function() {
     if (!environment) {
-      environment = {
-        ui: new UI(),
-        settings: new ProjectSettings()
-      };
+      const collection = {} || new RcCollection();
+      const rc = {} || new RcData(collection.data());
+      const blueprints = [];
+      const ui = new UI();
+      const settings = new ProjectSettings(collection, rc, blueprints, ui);
+
+      environment = { settings, ui };
     }
     return environment;
   };
