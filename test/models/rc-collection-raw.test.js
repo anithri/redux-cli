@@ -211,7 +211,10 @@ describe('(Models) RcCollectionRaw', () => {
     test('', () => {
       const testOpts = { findUp: fakeFindUp };
       const testRcs = new RcCollectionRaw(testOpts);
-      expect(testRcs.projectFiles).toEqual(['./.blueprintrc','findUp/.blueprintrc']);
+      expect(testRcs.projectFiles).toEqual([
+        './.blueprintrc',
+        'findUp/.blueprintrc'
+      ]);
     });
   });
 

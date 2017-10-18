@@ -52,7 +52,7 @@ class RcCollection {
       },
       {}
     );
-  };
+  }
 
   adjustPaths(obj, file) {
     return obj;

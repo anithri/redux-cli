@@ -13,7 +13,8 @@ function makeGetEnvironment() {
       const rc = new RcData(collection.data());
       const blueprints = new BlueprintCollection(
         rc.for('blueprintPaths'),
-        rc.for('blueprints'));
+        rc.for('blueprints')
+      );
       const ui = new UI();
       const settings = new ProjectSettings(collection, rc, blueprints, ui);
 

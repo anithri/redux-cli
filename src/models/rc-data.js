@@ -1,5 +1,8 @@
+import _flatten from 'lodash/flatten';
 import _get from 'lodash/get';
 import mergeData from '../util/mergers';
+
+const COMMON = 'common';
 
 class RcData {
   constructor(data, merger = mergeData) {
@@ -8,24 +11,45 @@ class RcData {
   }
 
   withDefaults(defaults) {
-    return new RcData(this.merger(defaults, this.data), this.merger);
+    return this.with({ defaults });
   }
 
   withPriority(priority) {
-    return new RcData(this.merger(this.data, priority), this.merger);
+    return this.with({ priority });
   }
 
-  withBp(name, defaults = {}) {
-    return new RcData(this.forBp(name, defaults), this.merger);
+  with({ priority = {}, data = this.data, common = {}, defaults = {} }) {
+    return new RcData(
+      this.merger([defaults, common, data, priority]),
+      this.merger
+    );
+  }
+
+  withBp(name, { defaults = {}, priority = {}, common = this.atCommon() }) {
+    return this.with({
+      data: this.atBp(name),
+      common,
+      defaults,
+      priority
+    });
   }
 
   for(path, defaultVal) {
     return _get(this.data, path, defaultVal);
   }
 
-  forBp(name, defaults = {}) {
-    const bp = this.for(`bp.${name}`, {});
-    return this.merger(defaults, bp);
+  forBp(name, key, defaultVal) {
+    return this.for(
+      `bp.${name}.${key}`,
+      this.for(`bp.common.${key}`, defaultVal)
+    );
+  }
+
+  atBp(name) {
+    return this.for(`bp.${name}`) || {};
+  }
+  atCommon() {
+    return this.atBp(COMMON);
   }
 }
 

@@ -1,13 +1,13 @@
 import merge from 'deepmerge';
 import _map from 'lodash/map';
 
-function arrayMerge(destArr, srcArr, options) {
+function arrayMerger(destArr, srcArr, options) {
   destArr.unshift(...srcArr);
   return destArr;
 }
 
-function mergeData(orig, fresh, merger = arrayMerge) {
-  return merge(orig, fresh, { arrayMerge: merger });
+function mergeData(datum, arrayMerge = arrayMerger) {
+  return merge.all(datum, { arrayMerge });
 }
 
 function normalizePaths(orig) {
@@ -27,6 +27,6 @@ function resolvePath(rawPaths, home, cwd, pathEx) {
   });
 }
 
-export {resolvePath, normalizePaths};
+export { resolvePath, normalizePaths };
 
 export default mergeData;

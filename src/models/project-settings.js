@@ -9,15 +9,13 @@ class ProjectSettings {
     this.ui = ui;
   }
 
-  get blueprints() { return this.bp; }
-
-  all(defaults = {}) {
-    return this.rc.with(defaults);
+  get blueprints() {
+    return this.bp;
   }
 
   //public & tested - maintain in 2.0
   getSetting(key, defaultVal) {
-    return _get(this.settings, key, defaultVal);
+    return this.rc.for(key, defaultVal);
   }
 }
 

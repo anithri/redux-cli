@@ -4,7 +4,7 @@ import _filter from 'lodash/filter';
 import findUp from 'find-up';
 import fs from 'fs';
 import path from 'path';
-import {resolvePath} from '../util/mergers';
+import { resolvePath } from '../util/mergers';
 
 class RcCollectionRaw {
   constructor(opts = {}) {
@@ -57,10 +57,7 @@ class RcCollectionRaw {
   }
 
   findProjectFiles() {
-    return [
-      `./${this.dotRc}`,
-      this.findUp(this.dotRc)
-    ];
+    return [`./${this.dotRc}`, this.findUp(this.dotRc)];
   }
 
   handleOS() {

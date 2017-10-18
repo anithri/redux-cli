@@ -9,6 +9,32 @@ describe('RcData', () => {
     });
   });
 
+  describe('#atBp(name)', () => {
+    test('it returns the data at bp.name', () => {
+      const testData = {
+        bp: {
+          batman: { hero: 'always' }
+        }
+      };
+
+      const data = new RcData(testData);
+      expect(data.atBp('batman')).toEqual({ hero: 'always' });
+    });
+  });
+
+  describe('#atCommon()', () => {
+    test('it returns the data at bp.common', () => {
+      const testData = {
+        bp: {
+          common: { hero: 'unknown' }
+        }
+      };
+      const data = new RcData(testData);
+
+      expect(data.atCommon()).toEqual({ hero: 'unknown' });
+    });
+  });
+
   describe('#for(key,defaultVal)', () => {
     test('it returns defaultVal if key is not found', () => {
       const data = new RcData('', {});
@@ -33,19 +59,20 @@ describe('RcData', () => {
     });
   });
 
-  describe('#forBp(bpName,bpDefaults)', () => {
-    test('it returns an {} when bpName is not found', () => {
+  describe('#forBp(name, key, defaultVal)', () => {
+    test('it returns undefined when bpName is not found', () => {
       const data = new RcData({});
-      expect(data.forBp('no.bp')).toEqual({});
+      expect(data.forBp('noBp', 'noKey')).to.be.undefined;
     });
 
-    test('it returns an defaults when bpName is not found', () => {
-      const testData = { name: 'Selina Kyle' };
-      const data = new RcData({});
-      expect(data.forBp('no.bp', testData)).toEqual(testData);
+    test('it returns default when key at bpName is not found', () => {
+      const expected = 'Selina Kyle';
+      const testData = { bp: { tweener: { name: expected } } };
+      const data = new RcData(testData);
+      expect(data.forBp('tweener', 'name', 'Selina Kyle')).toEqual(expected);
     });
 
-    test('it returns data at bp[name]', () => {
+    test('it returns data for key at bpName', () => {
       const fakeData = {
         bp: {
           WayneManor: {
@@ -54,86 +81,69 @@ describe('RcData', () => {
         }
       };
       const data = new RcData(fakeData);
-      const expectedData = { stately: 'WayneManor' };
+      const expectedData = 'WayneManor';
 
-      expect(data.forBp('WayneManor')).toEqual(expectedData);
-    });
-    test('it returns data at bp[name] merged with defaults', () => {
-      const fakeData = {
-        bp: {
-          WayneManor: {
-            stately: 'WayneManor'
-          }
-        }
-      };
-      const fakeDefaults = { target: 'often' };
-
-      const data = new RcData(fakeData);
-      const expectedData = { stately: 'WayneManor', target: 'often' };
-
-      expect(data.forBp('WayneManor', fakeDefaults)).toEqual(expectedData);
+      expect(data.forBp('WayneManor', 'stately')).toEqual(expectedData);
     });
   });
 
-  describe('#withDefaults(defaults)', () => {
+  describe('#with({defaults, common, data, priority})', () => {
     test('it returns a RcData obj', () => {
       const fakeData = {};
-      const fakeDefaults = {};
       const data = new RcData(fakeData);
-      const testData = data.withDefaults(fakeDefaults);
+      const testData = data.with({});
 
       expect(testData).to.be.an.instanceOf(RcData);
     });
 
     test('it returns a merged data', () => {
-      const fakeData = {
-        src: 'fakeData',
-        data: 'is Good'
-      };
       const fakeDefaults = {
-        src: 'fakeDefaults',
-        defaults: 'is Good'
+        defaults: 'fakeDefaults',
+        common: 'fakeDefaults',
+        data: 'fakeDefaults',
+        priority: 'fakeDefaults',
+        parts: ['fakeDefaults']
       };
-      const expected = {
-        src: 'fakeData',
-        data: 'is Good',
-        defaults: 'is Good'
+      const fakeCommon = {
+        common: 'fakeCommon',
+        data: 'fakeCommon',
+        priority: 'fakeCommon',
+        parts: ['fakeCommon']
       };
-      const data = new RcData(fakeData);
-      const testData = data.withDefaults(fakeDefaults);
-
-      expect(testData.data).toEqual(expected);
-    });
-  });
-
-  describe('#withPriority(priority)', () => {
-    test('it returns a RcData obj', () => {
-      const fakeData = {};
-      const fakePriority = {};
-      const data = new RcData(fakeData);
-
-      const testData = data.withPriority(fakePriority);
-      expect(testData).to.be.an.instanceOf(RcData);
-    });
-
-    test('it returns merged data', () => {
       const fakeData = {
-        src: 'fakeData',
-        data: 'is Good'
+        data: 'fakeData',
+        priority: 'fakeData',
+        parts: ['fakeData']
       };
       const fakePriority = {
-        src: 'fakePriority',
-        priority: 'is Good'
+        priority: 'fakePriority',
+        parts: ['fakePriority']
       };
       const expected = {
-        src: 'fakePriority',
-        data: 'is Good',
-        priority: 'is Good'
+        defaults: 'fakeDefaults',
+        common: 'fakeCommon',
+        data: 'fakeData',
+        priority: 'fakePriority',
+        parts: ['fakePriority', 'fakeData', 'fakeCommon', 'fakeDefaults']
+      };
+      const data = new RcData({});
+      const testRc = data.with({
+        defaults: fakeDefaults,
+        priority: fakePriority,
+        data: fakeData,
+        common: fakeCommon
+      });
+
+      expect(testRc.data).toEqual(expected);
+    });
+
+    test('it defaults to using this.data', () => {
+      const fakeData = {
+        fakeData: 'tru dat'
       };
       const data = new RcData(fakeData);
-      const testData = data.withPriority(fakePriority);
-
-      expect(testData.data).toEqual(expected);
+      const next = data.with({});
+      expect(next.data).toEqual(data.data);
     });
   });
 
@@ -142,7 +152,7 @@ describe('RcData', () => {
       const fakeData = {};
       const fakeDefaults = {};
       const data = new RcData(fakeData);
-      const bpData = data.withBp('no.data', fakeDefaults);
+      const bpData = data.withBp('no.data', { defaults: fakeDefaults });
 
       expect(bpData).to.be.an.instanceOf(RcData);
     });
@@ -156,7 +166,7 @@ describe('RcData', () => {
           }
         }
       };
-      const fakeBp = {
+      const fakeDefaults = {
         symbol: 'duh, a bat',
         gadget: 'utilityBelt'
       };
@@ -166,9 +176,31 @@ describe('RcData', () => {
         symbol: 'duh, a bat'
       };
       const data = new RcData(fakeData);
-      const testData = data.withBp('batman', fakeBp);
+      const testData = data.withBp('batman', { defaults: fakeDefaults });
 
       expect(testData.data).toEqual(expected);
+    });
+
+    test('it defaults to using this.common', () => {
+      const fakeData = {
+        bp: {
+          common: {
+            common: 'Yes sir',
+            data: 'common'
+          },
+          myBp: {
+            myBp: 'Yeah',
+            data: 'bp'
+          }
+        }
+      };
+      const expected = {
+        common: 'Yes sir',
+        myBp: 'Yeah',
+        data: 'bp'
+      };
+      const data = new RcData(fakeData);
+      expect(data.withBp('myBp', {}).data).toEqual(expected);
     });
   });
 });
