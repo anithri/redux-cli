@@ -1,7 +1,7 @@
 import fs from 'fs';
 import _flatten from 'lodash/flatten';
 import _map from 'lodash/map';
-import _reduceRight from 'lodash/reduceRight';
+import _at from 'lodash/at';
 import _reduce from 'lodash/reduce';
 import stripJsonComments from 'strip-json-comments';
 import rcCollectionRaw from './rc-collection-raw';
@@ -30,21 +30,27 @@ class RcCollection {
   }
 
   blueprintPaths() {
-    const out = [];
     return _flatten(
       _map(
         this.collection,
         (dirs, configFile) => {
-
+          return [];
         }
       )
     );
   }
 
   assembleAll(order, collected, defaults) {
+    console.log(order, collected, defaults)
+
+    const parts = [..._at(collected, order), defaults]
+
     const assembled = _reduceRight(
       order,
-      (all, name) => mergeData(all, collected[name]),
+      (all, name) => {
+        console.log(all, name);
+        return mergeData(all, collected[name]);
+      },
       defaults
     );
     assembled.assembly = {
@@ -86,8 +92,8 @@ class RcCollection {
       // continue processing? cli option to (en|dis)able?
       // log/trace/debug?
       // and *ugh* testing
-      const errData = { message: err.message, name: err.name };
-      return { error: errData, stack: err.stack };
+      const errData = {message: err.message, name: err.name};
+      return {error: errData, stack: err.stack};
     }
   }
 

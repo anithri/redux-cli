@@ -128,7 +128,7 @@ describe('(Models) RcCollection', () => {
   });
 
   describe('#assembleAll(order, collection, defaults = {})', () => {
-    test('it creates an assembly object on returned data ', () => {
+    xtest('it creates an assembly object on returned data ', () => {
       const testArgs = {
         files: []
       };
@@ -144,6 +144,7 @@ describe('(Models) RcCollection', () => {
       const testArgs = {
         files: []
       };
+
       const collection = {
         alfred: {
           name: 'Alfred Pennyworth',
@@ -155,16 +156,19 @@ describe('(Models) RcCollection', () => {
           location: 'Wayne Tower'
         }
       };
+
       const defaults = {
         position: 'Ally',
         name: 'Ace'
       };
       const testCollection = new RcCollection(testArgs);
+
       const data = testCollection.assembleAll(
         ['alfred', 'lucius'],
         collection,
         defaults
       );
+
       const expectedData = {
         position: 'Ally',
         name: 'Alfred Pennyworth',
