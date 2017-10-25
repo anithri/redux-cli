@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import fsEx from 'fs';
-import osEx from 'os';
 import process from 'process';
 import pathEx from 'path';
 import findUpEx from 'findUp';
-import pluralize from 'pluralize';
+import untildify from 'untildify';
 
 class FileCollection {
   constructor({cliFile = false, name = 'blueprint'}) {
@@ -20,10 +19,10 @@ class FileCollection {
     this.present = this.findTargetFiles(this.all);
   }
 
-  allFiles(morePaths, {findUp = findUpEx} = {}) {
+  allFiles(morePaths, {findUp = findUpEx, env = process.env, path = pathEx} = {}) {
     const potentials = [
       morePaths, // will include argv[--config]
-      process.env[this.envName],
+      env[this.envName],
       this.dotRc,
       findUp(this.dotRc),
       this.byOS(process.platform)
@@ -31,6 +30,7 @@ class FileCollection {
     return _(potentials)
       .flatten()
       .compact()
+      .map(f => path.resolve(this.cwd, untildify(f)))
       .uniq();
   }
 
@@ -75,11 +75,6 @@ class FileCollection {
       return [];
       // something serious unexpected happens, raise error or exit?
     }
-  }
-
-  findTargetDirs(targets, {fs = fsEx} = {}) {
-    return _(targets)
-      .filter(dir => fs.existsSync(dir) && fs.statSync(dir).isDirectory());
   }
 
   findTargetFiles(targets, {fs = fsEx} = {}) {

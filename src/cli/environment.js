@@ -6,23 +6,22 @@ function makeGetEnvironment() {
 
   return function() {
     if (!environment) {
-      // const configCli  = argv.getOption('config');
-      // const defaults   = fetchDefaults();
-      // const rcFiles    = new FileCollection(configCli);
-      // const rcRaw      = new RcRaw(rcFiles.present, defaults);
-      // const rc         = new RcData(rcRaw);
-      // const bpDirs     = new DirCollection(rcFiles, rc.blueprintPaths)
-      // const blueprints = new BlueprintCollection(bpDirs.present, rc);
-      // const ui         = new UI();
-      // environment = {
-      //   rcFiles,
-      //   rcRaw,
-      //   rc,
-      //   bpDirs,
-      //   blueprints,
-      //   ui
-      // };
-
+      //   const configCli  = argv.getOption('config');
+      //   const defaults   = fetchDefaults();
+      //   const rcFiles    = new FileCollection(configCli);
+      //   const rcRaw      = new RcRaw(rcFiles.present, defaults);
+      //   const rc         = new RcData(rcRaw);
+      //   const bpDirs     = new DirCollection(rcFiles, rc.blueprintPaths)
+      //   const blueprints = new BlueprintCollection(bpDirs.present, rc);
+      //   const ui         = new UI();
+      //   environment = {
+      //     rcFiles,
+      //     rcRaw,
+      //     rc,
+      //     bpDirs,
+      //     blueprints,
+      //     ui
+      //   };
 
       environment = {
         ui: new UI(),
