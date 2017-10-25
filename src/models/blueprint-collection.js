@@ -11,10 +11,9 @@ import _uniq from 'lodash/uniq';
 import Blueprint from './blueprint';
 
 export default class BlueprintCollection {
-  constructor(pathList, singles = []) {
-    this.pathList = pathList;
+  constructor(singles, explicit, implicit) {
     this.singles = singles;
-    // TODO handle singles
+    this.rawPaths = [...explicit, ...(this.defaultsAt(implicit))];
     this.setSearchPaths();
   }
 

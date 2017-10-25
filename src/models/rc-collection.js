@@ -1,4 +1,6 @@
 import fs from 'fs';
+import _flatten from 'lodash/flatten';
+import _map from 'lodash/map';
 import _reduceRight from 'lodash/reduceRight';
 import _reduce from 'lodash/reduce';
 import stripJsonComments from 'strip-json-comments';
@@ -25,6 +27,18 @@ class RcCollection {
       this.collection,
       defaults
     ));
+  }
+
+  blueprintPaths() {
+    const out = [];
+    return _flatten(
+      _map(
+        this.collection,
+        (dirs, configFile) => {
+
+        }
+      )
+    );
   }
 
   assembleAll(order, collected, defaults) {
@@ -76,6 +90,8 @@ class RcCollection {
       return { error: errData, stack: err.stack };
     }
   }
+
+
 }
 
 export default RcCollection;

@@ -7,18 +7,19 @@ import BlueprintCollection from '../models/blueprint-collection';
 function makeGetEnvironment() {
   let environment;
 
-  return function() {
+  return function () {
     if (!environment) {
       const collection = new RcCollection();
       const rc = new RcData(collection.data());
       const blueprints = new BlueprintCollection(
-        rc.for('blueprintPaths'),
-        rc.for('blueprints')
+        collection.rcFiles,
+        rc.for('blueprints',[]),
+        rc.for('blueprintPaths',[])
       );
       const ui = new UI();
       const settings = new ProjectSettings(collection, rc, blueprints, ui);
 
-      environment = { settings, ui };
+      environment = {settings, ui};
     }
     return environment;
   };
