@@ -1,28 +1,30 @@
 import _ from 'lodash';
+import os from 'os';
 import fsEx from 'fs';
 import process from 'process';
 import pathEx from 'path';
-import findUpEx from 'findUp';
+import findUpEx from 'findup-sync';
 import untildify from 'untildify';
 
 class FileCollection {
-  constructor({cliFile = false, name = 'blueprint'}) {
+  constructor({ cliFiles = [], name = 'blueprint' }) {
     this.cwd = process.cwd();
     this.name = name;
 
     this.rcFile = `${name}rc`.toLowerCase();
     this.dotRc = `.${this.rcFile}`;
-    this.envName = `${name}_config`.toUpperCase();
 
-    this.cliFile = cliFile;
-    this.all = this.allFiles(this.cliFile);
+    this.cliFiles = cliFiles;
+    this.all = this.allFiles(this.cliFiles);
     this.present = this.findTargetFiles(this.all);
   }
 
-  allFiles(morePaths, {findUp = findUpEx, env = process.env, path = pathEx} = {}) {
+  allFiles(
+    morePaths,
+    { findUp = findUpEx, env = process.env, path = pathEx } = {}
+  ) {
     const potentials = [
       morePaths, // will include argv[--config]
-      env[this.envName],
       this.dotRc,
       findUp(this.dotRc),
       this.byOS(process.platform)
@@ -34,13 +36,16 @@ class FileCollection {
       .uniq();
   }
 
-  byOS(platform, {path = pathEx, home = os.homedir(), env = process.env} = {}) {
+  byOS(
+    platform,
+    { path = pathEx, home = os.homedir(), env = process.env } = {}
+  ) {
     let userDir;
     switch (platform) {
     case 'freebsd': // pretty sure
-      /* NEEDS TESTING */
+    /* NEEDS TESTING */
     case 'sunos': // maybe?
-      /* NEEDS TESTING */
+    /* NEEDS TESTING */
     case 'linux': // for sure
       userDir = path.resolve(home, env.XDG_CONFIG_HOME || '.config');
       return [
@@ -50,7 +55,7 @@ class FileCollection {
         path.resolve(userDir, this.name, this.rcFile),
         path.resolve(userDir, this.name, 'config')
       ];
-      // https://stackoverflow.com/questions/3373948/equivalents-of-xdg-config-home-and-xdg-data-home-on-mac-os-x
+    // https://stackoverflow.com/questions/3373948/equivalents-of-xdg-config-home-and-xdg-data-home-on-mac-os-x
     case 'darwin':
       /* NEEDS TESTING */
       userDir = path.resolve(home, 'Library', 'Preferences', this.name);
@@ -73,13 +78,14 @@ class FileCollection {
       ];
     default:
       return [];
-      // something serious unexpected happens, raise error or exit?
-    }
+    // something serious unexpected happens, raise error or exit?
   }
+}
 
-  findTargetFiles(targets, {fs = fsEx} = {}) {
-    return _(targets)
-      .filter(file => fs.existsSync(file) && fs.statSync(file).isFile());
+  findTargetFiles(targets, { fs = fsEx } = {}) {
+    return _(targets).filter(
+      file => fs.existsSync(file) && fs.statSync(file).isFile()
+    );
   }
 }
 
