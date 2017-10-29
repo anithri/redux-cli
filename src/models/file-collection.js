@@ -7,7 +7,7 @@ import findUpEx from 'findup-sync';
 import untildify from 'untildify';
 
 class FileCollection {
-  constructor({ cliFiles = [], name = 'blueprint' }) {
+  constructor({cliFiles = [], name = 'blueprint'}) {
     this.cwd = process.cwd();
     this.name = name;
 
@@ -19,10 +19,7 @@ class FileCollection {
     this.present = this.findTargetFiles(this.all);
   }
 
-  allFiles(
-    morePaths,
-    { findUp = findUpEx, env = process.env, path = pathEx } = {}
-  ) {
+  allFiles(morePaths, {findUp = findUpEx, path = pathEx} = {}) {
     const potentials = [
       morePaths, // will include argv[--config]
       this.dotRc,
@@ -36,16 +33,13 @@ class FileCollection {
       .uniq();
   }
 
-  byOS(
-    platform,
-    { path = pathEx, home = os.homedir(), env = process.env } = {}
-  ) {
+  byOS(platform, {path = pathEx, home = os.homedir(), env = process.env} = {}) {
     let userDir;
     switch (platform) {
     case 'freebsd': // pretty sure
-    /* NEEDS TESTING */
+      /* NEEDS TESTING */
     case 'sunos': // maybe?
-    /* NEEDS TESTING */
+      /* NEEDS TESTING */
     case 'linux': // for sure
       userDir = path.resolve(home, env.XDG_CONFIG_HOME || '.config');
       return [
@@ -55,7 +49,7 @@ class FileCollection {
         path.resolve(userDir, this.name, this.rcFile),
         path.resolve(userDir, this.name, 'config')
       ];
-    // https://stackoverflow.com/questions/3373948/equivalents-of-xdg-config-home-and-xdg-data-home-on-mac-os-x
+      // https://stackoverflow.com/questions/3373948/equivalents-of-xdg-config-home-and-xdg-data-home-on-mac-os-x
     case 'darwin':
       /* NEEDS TESTING */
       userDir = path.resolve(home, 'Library', 'Preferences', this.name);
@@ -78,11 +72,11 @@ class FileCollection {
       ];
     default:
       return [];
-    // something serious unexpected happens, raise error or exit?
+      // something serious unexpected happens, raise error or exit?
+    }
   }
-}
 
-  findTargetFiles(targets, { fs = fsEx } = {}) {
+  findTargetFiles(targets, {fs = fsEx} = {}) {
     return _(targets).filter(
       file => fs.existsSync(file) && fs.statSync(file).isFile()
     );
