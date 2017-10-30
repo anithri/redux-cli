@@ -7,7 +7,7 @@ import findUpEx from 'findup-sync';
 import untildify from 'untildify';
 
 class FileCollection {
-  constructor({cliFiles = [], name = 'blueprint'}) {
+  constructor(cliFiles = [], {name = 'blueprint'} = {}) {
     this.cwd = process.cwd();
     this.name = name;
 
@@ -19,18 +19,19 @@ class FileCollection {
     this.present = this.findTargetFiles(this.all);
   }
 
-  allFiles(morePaths, {findUp = findUpEx, path = pathEx} = {}) {
+  allFiles(morePaths, {findUp = findUpEx, path = pathEx, platform = process.platform} = {}) {
     const potentials = [
       morePaths, // will include argv[--config]
       this.dotRc,
       findUp(this.dotRc),
-      this.byOS(process.platform)
+      this.byOS(platform)
     ];
     return _(potentials)
       .flatten()
       .compact()
       .map(f => path.resolve(this.cwd, untildify(f)))
-      .uniq();
+      .uniq()
+      .value();
   }
 
   byOS(platform, {path = pathEx, home = os.homedir(), env = process.env} = {}) {
