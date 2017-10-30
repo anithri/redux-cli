@@ -11,7 +11,7 @@ function fetchDefaults() {
 function makeGetEnvironment() {
   let environment;
 
-  return function () {
+  return function() {
     if (!environment) {
       environment = {
         ui: new UI(),
@@ -26,8 +26,8 @@ export function getEnvironment(args = {}) {
   const name = args.rcName || 'blueprint'; // or whatever
   const configFiles = args.config; // or whatever
   const defaults = fetchDefaults(); // or whatever
-  const rcFiles = new FileCollection(configFiles, {name});
-  const rcRaw = new RcRaw({rcFiles: rcFiles.present, args, defaults});
+  const rcFiles = new FileCollection(configFiles, { name });
+  const rcRaw = new RcRaw({ rcFiles: rcFiles.present, args, defaults });
   const rc = new RcData(rcRaw.data);
   // const bpDirs = new DirCollection(rcFiles, rc.blueprintPaths, {name});
   // const blueprints = new BlueprintCollection(bpDirs.present, rc);

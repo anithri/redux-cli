@@ -15,8 +15,8 @@ describe('(Models) RcRaw', () => {
     test('It assigns options', () => {
       const args = {
         rcFiles: ['FileName'],
-        args: {cli: 'Args'},
-        defaults: {some: 'defaults'}
+        args: { cli: 'Args' },
+        defaults: { some: 'defaults' }
       };
       const testRc = new RcRaw(args);
       expect(testRc).to.have.property('rcFiles', args.rcFiles);
@@ -29,23 +29,26 @@ describe('(Models) RcRaw', () => {
       const fakeFs = {
         readFileSync: path => `{"path":"${path}"}`
       };
-      const testArgs = {fs: fakeFs};
+      const testArgs = { fs: fakeFs };
       const testRc = new RcRaw({});
       const testData = testRc.collectFile('fakeFile', testArgs);
-      expect(testData).toEqual({path: 'fakeFile'});
+      expect(testData).toEqual({ path: 'fakeFile' });
     });
     test('it removes comments from file before parsing as JSON', () => {
       const fakeFs = {
         readFileSync: path =>
           `{\n//test one\n/* test \n two \n */\n"path":"${path}"}`
       };
-      const testArgs = {fs: fakeFs};
+      const testArgs = { fs: fakeFs };
       const testCollection = new RcRaw({});
       const testData = testCollection.collectFile('fakeFile', testArgs);
-      expect(testData).toEqual({path: 'fakeFile'});
+      expect(testData).toEqual({ path: 'fakeFile' });
     });
     test('it reads file as json from path', () => {
-      const testFixture = path.resolve(cwd, 'test/fixtures/collectFileTest.json');
+      const testFixture = path.resolve(
+        cwd,
+        'test/fixtures/collectFileTest.json'
+      );
       const testCollection = new RcRaw({});
       const testData = testCollection.collectFile(testFixture);
       expect(testData.path).toEqual('test/fixtures/collectFileTest.json');
@@ -68,24 +71,26 @@ describe('(Models) RcRaw', () => {
         readFileSync: path => `{"path":"${path}"}`
       };
       const testRc = new RcRaw({});
-      const testData = testRc.collectAll(['Batmobile', 'UtilityBelt'], {fs: fakeFs});
+      const testData = testRc.collectAll(['Batmobile', 'UtilityBelt'], {
+        fs: fakeFs
+      });
       const testCollection = testRc.collection;
       expect(testData).toEqual([
-        {path: 'Batmobile'},
-        {path: 'UtilityBelt'}
+        { path: 'Batmobile' },
+        { path: 'UtilityBelt' }
       ]);
 
       expect(testCollection).toEqual({
-        Batmobile: {path: 'Batmobile'},
-        UtilityBelt: {path: 'UtilityBelt'}
+        Batmobile: { path: 'Batmobile' },
+        UtilityBelt: { path: 'UtilityBelt' }
       });
     });
   });
 
   describe('#assembleAll(rcFiles, {fs})', () => {
     test('it creates an assembly object on returned data ', () => {
-      const defaults = {alfred: 'Pennyworth'};
-      const testCollection = new RcRaw({defaults});
+      const defaults = { alfred: 'Pennyworth' };
+      const testCollection = new RcRaw({ defaults });
       const data = testCollection.assembleAll([]);
 
       expect(data.alfred).toEqual('Pennyworth');
@@ -114,9 +119,11 @@ describe('(Models) RcRaw', () => {
         name: 'Ace'
       };
 
-      const testCollection = new RcRaw({defaults});
+      const testCollection = new RcRaw({ defaults });
 
-      const data = testCollection.assembleAll(['alfred', 'lucius'], {fs: fakeFs});
+      const data = testCollection.assembleAll(['alfred', 'lucius'], {
+        fs: fakeFs
+      });
 
       const expectedData = {
         position: 'Ally',
@@ -152,7 +159,6 @@ describe('(Models) RcRaw', () => {
       const testResult = testRc.adjustPaths(testObj, srcFile);
 
       expect(testResult.paths).toEqual(expected);
-
     });
   });
 });

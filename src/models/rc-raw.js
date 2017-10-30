@@ -8,7 +8,7 @@ import untildify from 'untildify';
 
 // const rcRaw = new RcRaw({rcFiles: rcFiles.present, args, defaults});
 class RcRaw {
-  constructor({rcFiles = [], args = {}, defaults = {}} = {}) {
+  constructor({ rcFiles = [], args = {}, defaults = {} } = {}) {
     this.rcFiles = rcFiles;
     this.args = args;
     this.defaults = defaults;
@@ -20,30 +20,30 @@ class RcRaw {
     return (this.assembledData = this.assembleAll(this.rcFiles));
   }
 
-  assembleAll(rcFiles = this.rcFiles, {fs = fsEx} = {}) {
+  assembleAll(rcFiles = this.rcFiles, { fs = fsEx } = {}) {
     const collected = [
       this.args,
-      ...(this.collectAll(rcFiles, {fs})),
+      ...this.collectAll(rcFiles, { fs }),
       this.defaults
     ].reverse(); // merge expects lowest priority first
 
     const assembled = mergeData(collected);
-    assembled.assembly = {rcFiles};
+    assembled.assembly = { rcFiles };
 
     return assembled;
   }
 
-  collectAll(files, {fs = fsEx} = {}) {
+  collectAll(files, { fs = fsEx } = {}) {
     return _reduce(
       files,
       (all, file) => {
-        return [...all, this.collectFile(file, {fs})];
+        return [...all, this.collectFile(file, { fs })];
       },
       {}
     );
   }
 
-  adjustPaths(obj, file, {path = pathEx} = {}) {
+  adjustPaths(obj, file, { path = pathEx } = {}) {
     if (!obj.paths) return obj;
     const basePath = path.dirname(file);
     const pathsObj = obj.paths || {};
@@ -55,10 +55,10 @@ class RcRaw {
       },
       {}
     );
-    return {...obj, paths};
+    return { ...obj, paths };
   }
 
-  collectFile(file, {fs = fsEx} = {}) {
+  collectFile(file, { fs = fsEx } = {}) {
     try {
       const contents = fs.readFileSync(file);
       const obj = JSON.parse(stripJsonComments(contents.toString()));
@@ -72,8 +72,8 @@ class RcRaw {
       // continue processing? cli option to (en|dis)able?
       // log/trace/debug?
       // and *ugh* testing
-      const errData = {message: err.message, name: err.name};
-      return {error: errData, stack: err.stack};
+      const errData = { message: err.message, name: err.name };
+      return { error: errData, stack: err.stack };
     }
   }
 }

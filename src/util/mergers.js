@@ -6,7 +6,7 @@ function arrayMerger(destArr, srcArr, options) {
 }
 
 function mergeData(datum, arrayMerge = arrayMerger) {
-  return merge.all(datum, {arrayMerge});
+  return merge.all(datum, { arrayMerge });
 }
 
 function normalizePaths(orig) {

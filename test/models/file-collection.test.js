@@ -10,7 +10,8 @@ const fakeFindUp = path => `findUp/${path}`;
 describe('(Models) FileCollection', () => {
   describe('new FileCollection(cliFiles, {name})', () => {
     test('it sets files and name', () => {
-      const testCollection = new FileCollection('Flash', {name: 'Wally'});
+      const testCollection = new FileCollection('Flash', { name: 'Wally' });
+
       expect(testCollection).to.have.property('cliFiles', 'Flash');
       expect(testCollection).to.have.property('name', 'Wally');
       expect(testCollection).to.have.property('rcFile', 'wallyrc');
@@ -28,7 +29,10 @@ describe('(Models) FileCollection', () => {
       const testPlatform = 'linux';
       const env = {};
       const testCollection = new FileCollection([]);
-      const result = testCollection.byOS(testPlatform, {env, home: '/a/home'});
+      const result = testCollection.byOS(testPlatform, {
+        env,
+        home: '/a/home'
+      });
       const expected = [
         '/a/home/.blueprintrc',
         '/a/home/.config/.blueprintrc',
@@ -43,7 +47,10 @@ describe('(Models) FileCollection', () => {
       const testPlatform = 'darwin';
       const env = {};
       const testCollection = new FileCollection([]);
-      const result = testCollection.byOS(testPlatform, {env, home: '/a/home'});
+      const result = testCollection.byOS(testPlatform, {
+        env,
+        home: '/a/home'
+      });
       const expected = [
         '/a/home/.blueprintrc',
         '/a/home/Library/Preferences/blueprint/.blueprintrc',
@@ -60,7 +67,10 @@ describe('(Models) FileCollection', () => {
         APPDATA: '/a/home/APPDATA'
       };
       const testCollection = new FileCollection([]);
-      const result = testCollection.byOS(testPlatform, {env, home: '/a/home'});
+      const result = testCollection.byOS(testPlatform, {
+        env,
+        home: '/a/home'
+      });
       const expected = [
         '/a/home/.blueprintrc',
         '/a/home/LOCALAPPDATA/blueprint/blueprintrc',
@@ -70,19 +80,17 @@ describe('(Models) FileCollection', () => {
       ];
       expect(result).toEqual(expected);
     });
-
   });
 
   describe('allFiles(morePaths, {findUp, path})', () => {
     test('it returns files found', () => {
       const testFiles = [];
       const testCollection = new FileCollection(testFiles);
-      const result = testCollection.allFiles(['/some/file'], {platform: 'NoPlatform'});
-      console.log('result',result);
-      const expected = [
-        '/some/file',
-        cwd + '/.blueprintrc'
-      ];
+      const result = testCollection.allFiles(['/some/file'], {
+        platform: 'NoPlatform'
+      });
+      const expected = ['/some/file', cwd + '/.blueprintrc'];
+
       expect(result).toEqual(expected);
     });
   });

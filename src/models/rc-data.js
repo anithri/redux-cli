@@ -17,8 +17,7 @@ class RcData {
   }
 
   with({ priority = {}, data = this.data, common = {}, defaults = {} }) {
-    return new RcData(mergeData([defaults, common, data, priority])
-    );
+    return new RcData(mergeData([defaults, common, data, priority]));
   }
 
   withBp(name, { defaults = {}, priority = {}, common = this.atCommon() }) {
