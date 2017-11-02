@@ -14,20 +14,21 @@ class DirCollection {
     this.present = this.findPaths(this.all);
   }
 
-  fromRc(files, { path = pathEx }) {
+  fromRc(files, { path = pathEx } = {}) {
     return _(files)
       .map(file => {
         const dir = path.dirname(file);
         return [path.resolve(dir, this.bpDir), path.resolve(dir, this.dotBp)];
       })
-      .flatten();
+      .flatten()
+      .value();
   }
 
   findPaths(targets, { fs = fsEx } = {}) {
     return _(targets).filter(
       dir => fs.existsSync(dir) && fs.statSync(dir).isDirectory()
-    );
+    ).value();
   }
 }
 
-export default FileCollection;
+export default DirCollection;

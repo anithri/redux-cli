@@ -2,7 +2,6 @@ import { which, rm, exec } from 'shelljs';
 import SubCommand from '../models/sub-command';
 import CreateAndStepIntoDirectory from '../tasks/create-and-step-into-directory';
 import GitPull from '../tasks/git-pull';
-import ProjectSettings from '../models/project-settings';
 
 // eventually allow users to create new projects based on a flag
 // ie. they can create a new react-redux-starter-kit or a new

@@ -12,9 +12,11 @@ import config from '../config';
 const { basePath } = config;
 
 export default class Blueprint {
-  constructor(blueprintPath) {
+  constructor(blueprintPath, rc) {
     this.path = blueprintPath;
+    this.rc = rc;
     this.name = path.basename(blueprintPath);
+    this.rcData = rc.withBp(this.name); // TODO needs to be integrated with blueprint defaults.
     this.command = this.command || {}; // default if not set by mixin
   }
 
@@ -44,7 +46,7 @@ export default class Blueprint {
   }
 
   // load in the blueprint that was found, extend this class to load it
-  static load(blueprintPath) {
+  static load(blueprintPath, rc) {
     let Constructor;
     const constructorPath = path.resolve(blueprintPath, 'index.js');
 
@@ -53,7 +55,7 @@ export default class Blueprint {
         const blueprintModule = require(constructorPath);
         Constructor = mixin(Blueprint, blueprintModule);
 
-        return new Constructor(blueprintPath);
+        return new Constructor(blueprintPath, rc);
       }
     }
   }

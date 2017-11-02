@@ -11,19 +11,10 @@ import _uniq from 'lodash/uniq';
 import Blueprint from './blueprint';
 
 export default class BlueprintCollection {
-  constructor(pathList) {
+  constructor(pathList, rc) {
     this.pathList = pathList;
-    this.setSearchPaths();
-  }
-
-  allPossiblePaths() {
-    return _flatten(
-      _map(this.pathList, (arr, base) => _map(arr, bp => expandPath(base, bp)))
-    );
-  }
-
-  setSearchPaths() {
-    this.searchPaths = _uniq(_filter(this.allPossiblePaths(), validSearchDir));
+    this.rc = rc;
+    this.addBlueprint = this.addBlueprint.bind(this);
   }
 
   all() {
@@ -31,7 +22,7 @@ export default class BlueprintCollection {
     if (this.allBlueprints) {
       return this.allBlueprints;
     } else {
-      return (this.allBlueprints = this.discoverBlueprints());
+      return (this.allBlueprints = this.discoverBlueprints(this.pathList));
     }
   }
 
@@ -45,16 +36,16 @@ export default class BlueprintCollection {
   }
 
   addBlueprint(path) {
-    return Blueprint.load(path);
+    return Blueprint.load(path, this.rc);
   }
 
-  discoverBlueprints() {
-    return _map(this.findBlueprints(), this.addBlueprint);
+  discoverBlueprints(paths) {
+    return _map(this.findBlueprints(paths), this.addBlueprint);
   }
 
-  findBlueprints() {
+  findBlueprints(bpPaths) {
     return _flatten(
-      _map(this.searchPaths, dir => {
+      _map(bpPaths, dir => {
         const subdirs = _map(fs.readdirSync(dir), p => path.resolve(dir, p));
         return _filter(subdirs, d =>
           fs.existsSync(path.resolve(d, 'index.js'))
@@ -69,41 +60,5 @@ export default class BlueprintCollection {
 
   lookup(name) {
     return this.lookupAll(name)[0];
-  }
-}
-
-function validSearchDir(dir) {
-  return fs.existsSync(dir) && fs.lstatSync(dir).isDirectory();
-}
-
-export function expandPath(base, candidate) {
-  let final;
-  if (candidate[0] === '~') {
-    const st = candidate[1] === path.sep ? 2 : 1;
-    final = path.resolve(process.env.HOME, candidate.slice(st));
-  } else if (candidate[0] === path.sep) {
-    final = path.resolve(candidate);
-    // } else if (candidate[0] === '@') {
-    //   return path.join(npmPath,npm name, 'blueprints');
-  } else {
-    final = path.resolve(base, candidate);
-  }
-  return final;
-}
-
-export function parseBlueprintSetting(setting) {
-  if (_isArray(setting)) {
-    return [...setting, './blueprints'];
-  } else if (_isString(setting)) {
-    return [setting, './blueprints'];
-  } else if (_isBool(setting)) {
-    return setting ? ['./blueprints'] : [];
-  } else if (_isNil(setting)) {
-    return ['./blueprints'];
-  } else {
-    // No numbers,
-    // raise error here?
-    // console.error('Unknown blueprint type');
-    return ['./blueprints'];
   }
 }

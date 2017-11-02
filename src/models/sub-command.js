@@ -1,4 +1,3 @@
-import ProjectSettings from './project-settings';
 import UI from './ui';
 import figlet from 'figlet';
 import { success } from '../util/text-helper';
@@ -6,7 +5,6 @@ import { success } from '../util/text-helper';
 class SubCommand {
   constructor(options = {}) {
     this.rawOptions = options;
-    this.settings = options.settings || new ProjectSettings();
     this.ui = options.ui || new UI();
 
     this.environment = {

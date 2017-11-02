@@ -1,4 +1,3 @@
-import ProjectSettings from 'models/project-settings';
 import fs from 'fs';
 import config from 'config';
 

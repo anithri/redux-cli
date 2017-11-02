@@ -86,7 +86,7 @@ class FileCollection {
   findTargetFiles(targets, { fs = fsEx } = {}) {
     return _(targets).filter(
       file => fs.existsSync(file) && fs.statSync(file).isFile()
-    );
+    ).value();
   }
 }
 
