@@ -12,7 +12,7 @@ class Config extends SubCommand {
   }
 
   run() {
-    const {rcFiles, rc, bpPaths, blueprints} = this.options;
+    const { rcFiles, rc, bpPaths, blueprints } = this.options;
     this.ui.write(this.cliLogo() + '\n');
     this.ui.writeInfo('Rc Files');
     console.log(prettyjson.render(rcFiles.present, {}, 8));

@@ -30,7 +30,11 @@ function getEnvironment(args = {}) {
   const rcFiles = new FileCollection(configFiles, { name });
   const rcRaw = new RcRaw({ rcFiles: rcFiles.present, args, defaults });
   const rc = new RcData(rcRaw.data());
-  const bpPaths = new DirCollection(rcFiles.present, rc.for('blueprintPaths', []), {name});
+  const bpPaths = new DirCollection(
+    rcFiles.present,
+    rc.for('blueprintPaths', []),
+    { name }
+  );
   const blueprints = new BlueprintCollection(bpPaths.present, rc);
   const ui = new UI();
   const environment = {

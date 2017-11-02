@@ -25,9 +25,9 @@ class DirCollection {
   }
 
   findPaths(targets, { fs = fsEx } = {}) {
-    return _(targets).filter(
-      dir => fs.existsSync(dir) && fs.statSync(dir).isDirectory()
-    ).value();
+    return _(targets)
+      .filter(dir => fs.existsSync(dir) && fs.statSync(dir).isDirectory())
+      .value();
   }
 }
 
