@@ -21,16 +21,6 @@ describe('(Model) BlueprintCollection', () => {
     });
   });
 
-  xdescribe('#generators()', () => {
-    // update when generators are implements
-    it('should return an array of all generator blueprints in searchPaths', () => {
-      const blueprints = new BlueprintCollection([bpPath], fakeRc);
-      const result = blueprints.all();
-      expect(result).to.be.an('Array');
-      expect(result).toHaveLength(2);
-    });
-  });
-
   describe('#lookupAll(name)', () => {
     test('returns empty array if blueprint for name', () => {
       const blueprints = new BlueprintCollection([bpPath], fakeRc);

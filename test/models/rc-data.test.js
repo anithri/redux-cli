@@ -34,6 +34,16 @@ describe('RcData', () => {
     });
   });
 
+  describe('#withDefaults(defaults)', () => {
+    xtest('returns an object merged with defaults', () => {
+    });
+  });
+
+  describe('#withPriority(priorities)', () => {
+    xtest('returns an object merged with priorities', () => {
+    });
+  });
+
   describe('#for(key,defaultVal)', () => {
     test('it returns defaultVal if key is not found', () => {
       const data = new RcData('', {});

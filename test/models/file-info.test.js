@@ -26,6 +26,8 @@ describe('(Model) FileInfo', () => {
   });
 
   describe('#isFile', () => {
+    // TODO add a test for the catch branch
+
     test('return true if original path is a file', () => {
       const info = new FileInfo({
         templateVariables: {},
@@ -121,6 +123,7 @@ describe('(Model) FileInfo', () => {
   });
 
   describe('#renderTempalte', () => {
+    // TODO add a test for the cath branch
     test('renders ejs template with the template variables', () => {
       const info = new FileInfo({
         templateVariables: { name: 'rendered ejs string' },

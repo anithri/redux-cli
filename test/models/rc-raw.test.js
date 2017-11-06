@@ -24,6 +24,26 @@ describe('(Models) RcRaw', () => {
       expect(testRc).to.have.property('defaults', args.defaults);
     });
   });
+
+  describe('#data()', () => {
+    test('it returns assembled_data if it exists', () => {
+      const testData = {Aquaman: 'becomes cool?'};
+      const testRcRaw = new RcRaw();
+
+
+      testRcRaw.assembledData = testData;
+      expect(testRcRaw.data()).toEqual(testData);
+    });
+    test('it calls assembleAll when no assembledData exists', () => {
+      const testPaths = [];
+      const testRcRaw = new RcRaw(testPaths);
+
+      expect(testRcRaw.assembledData).to.be.undefined;
+
+      expect(testRcRaw.data()).toHaveProperty('assembly', {rcFiles: []});
+    });
+
+  });
   describe('#collectFile(file, {fs})', () => {
     test('it parse contents of file as JSON', () => {
       const fakeFs = {

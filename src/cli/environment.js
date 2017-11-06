@@ -5,23 +5,10 @@ import RcData from '../models/rc-data';
 import RcRaw from '../models/rc-raw';
 import UI from '../models/ui';
 
+
 function fetchDefaults() {
   return {};
 }
-
-// function makeGetEnvironment() {
-//   let environment;
-//
-//   return function() {
-//     if (!environment) {
-//       environment = {
-//         ui: new UI(),
-//         settings: new ProjectSettings()
-//       };
-//     }
-//     return environment;
-//   };
-// }
 
 function getEnvironment(args = {}) {
   const name = args.rcName || 'blueprint'; // or whatever
@@ -49,5 +36,3 @@ function getEnvironment(args = {}) {
 }
 
 export default getEnvironment;
-//
-// export default makeGetEnvironment();

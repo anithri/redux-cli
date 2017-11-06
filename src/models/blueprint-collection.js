@@ -21,23 +21,29 @@ export default class BlueprintCollection {
     }
   }
 
-  generators() {
-    // until we learn to tell generators apart from partials
-    return [];
-  }
-
   allNames() {
     return _map(this.all(), bp => bp.name);
   }
 
+  lookupAll(name) {
+    return _filter(this.all(), bp => bp.name === name);
+  }
+
+  lookup(name) {
+    return this.lookupAll(name)[0];
+  }
+
+  /* istanbul ignore next */
   addBlueprint(path) {
     return Blueprint.load(path, this.rc);
   }
 
+  /* istanbul ignore next */
   discoverBlueprints(paths) {
     return _map(this.findBlueprints(paths), this.addBlueprint);
   }
 
+  /* istanbul ignore next */
   findBlueprints(bpPaths) {
     return _flatten(
       _map(bpPaths, dir => {
@@ -47,13 +53,5 @@ export default class BlueprintCollection {
         );
       })
     );
-  }
-
-  lookupAll(name) {
-    return _filter(this.all(), bp => bp.name === name);
-  }
-
-  lookup(name) {
-    return this.lookupAll(name)[0];
   }
 }
