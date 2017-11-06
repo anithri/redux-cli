@@ -35,12 +35,51 @@ describe('RcData', () => {
   });
 
   describe('#withDefaults(defaults)', () => {
-    xtest('returns an object merged with defaults', () => {
+    test('returns an object merged with defaults', () => {
+      const fakeDefaults = {
+        defaults: 'fakeDefaults',
+        data: 'fakeDefaults',
+        parts: ['fakeDefaults']
+      };
+      const fakeData = {
+        data: 'fakeData',
+        parts: ['fakeData']
+      };
+      const rc = new RcData(fakeData);
+      const result = rc.withDefaults(fakeDefaults);
+
+      const expected = {
+        defaults: 'fakeDefaults',
+        data: 'fakeData',
+        parts: ['fakeData', 'fakeDefaults']
+      }
+
+      expect(result).toBeInstanceOf(RcData);
+      expect(result.data).toEqual(expected);
     });
   });
 
   describe('#withPriority(priorities)', () => {
-    xtest('returns an object merged with priorities', () => {
+    test('returns an object merged with priorities', () => {
+      const fakeData = {
+        data: 'fakeData',
+        priority: 'fakeData',
+        parts: ['fakeData']
+      };
+      const fakePriority = {
+        priority: 'fakePriority',
+        parts: ['fakePriority']
+      };
+      const rc = new RcData(fakeData);
+      const result = rc.withPriority(fakePriority);
+
+      const expected = {
+        data: 'fakeData',
+        priority: 'fakePriority',
+        parts: ['fakePriority', 'fakeData']
+      }
+      expect(result).toBeInstanceOf(RcData);
+      expect(result.data).toEqual(expected);
     });
   });
 

@@ -44,6 +44,8 @@ describe('(Models) RcRaw', () => {
     });
 
   });
+
+  // TODO coverage not happy with _reduce
   describe('#collectFile(file, {fs})', () => {
     test('it parse contents of file as JSON', () => {
       const fakeFs = {
