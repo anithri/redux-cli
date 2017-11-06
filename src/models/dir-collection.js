@@ -9,6 +9,7 @@ class DirCollection {
     this.bpDir = pluralize(name);
     this.dotBp = '.' + this.bpDir;
     this.rcFiles = rcFiles;
+    this.rcDirs = rcDirs;
     this.defaults = this.fromRc(rcFiles);
     this.all = [...rcDirs, ...this.defaults];
     this.present = this.findPaths(this.all);

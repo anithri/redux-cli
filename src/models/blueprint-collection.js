@@ -1,14 +1,9 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import _map from 'lodash/map';
 import _filter from 'lodash/filter';
-import _isNil from 'lodash/isNil';
-import _isBool from 'lodash/isBoolean';
-import _isString from 'lodash/isString';
-import _isArray from 'lodash/isArray';
-import _flatten from 'lodash/flatten';
-import _uniq from 'lodash/uniq';
 import Blueprint from './blueprint';
+import _flatten from 'lodash/flatten';
 
 export default class BlueprintCollection {
   constructor(pathList, rc) {
@@ -28,7 +23,7 @@ export default class BlueprintCollection {
 
   generators() {
     // until we learn to tell generators apart from partials
-    return _filter(this.all(), bp => bp.name);
+    return [];
   }
 
   allNames() {

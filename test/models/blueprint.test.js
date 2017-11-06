@@ -1,16 +1,18 @@
 import path from 'path';
 import Blueprint from 'models/blueprint';
 
-const fixtureBlueprints = path.resolve(
+const basicBlueprintPath = path.resolve(
   __dirname,
   '..',
   'fixtures',
-  'blueprints'
+  'blueprints',
+  'basic'
 );
-const basicBlueprint = path.join(fixtureBlueprints, 'basic');
+const fakeRc = {withBp: () => ({})};
+
 
 describe('(Model) Blueprint', () => {
-  const blueprint = new Blueprint(basicBlueprint);
+  const blueprint = new Blueprint(basicBlueprintPath,fakeRc);
 
   describe('#description', () => {
     test('returns a description', () => {
@@ -20,7 +22,7 @@ describe('(Model) Blueprint', () => {
 
   describe('#filesPath', () => {
     test('returns a default of "files" ', () => {
-      const expectedPath = path.join(basicBlueprint, 'files');
+      const expectedPath = path.join(basicBlueprintPath, 'files');
       expect(blueprint.filesPath()).toEqual(expectedPath);
     });
   });
@@ -31,16 +33,15 @@ describe('(Model) Blueprint', () => {
       const expectedFiles = ['expected-file.js'];
       expect(files).toEqual(expectedFiles);
     });
-
     test('defaults to empty array when no files', () => {
-      const blueprint = new Blueprint('ridiculous/path/that/doesnt/exist');
+      const blueprint = new Blueprint('ridiculous/path/that/doesnt/exist', fakeRc);
       expect(blueprint.files()).toEqual([]);
     });
   });
 
   describe('.load', () => {
     test('loads a blueprint from a path', () => {
-      const blueprint = Blueprint.load(basicBlueprint);
+      const blueprint = Blueprint.load(basicBlueprintPath, fakeRc);
       expect(blueprint.name).toEqual('basic');
     });
   });
