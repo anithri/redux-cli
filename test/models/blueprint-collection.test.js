@@ -5,14 +5,9 @@ import BlueprintCollection, {
 } from 'models/blueprint-collection';
 import Blueprint from 'models/blueprint';
 
-const fakeRc = {withBp: () => ({})};
+const fakeRc = { withBp: () => ({}) };
 
-const bpPath = path.resolve(
-  __dirname,
-  '..',
-  'fixtures',
-  'blueprints'
-);
+const bpPath = path.resolve(__dirname, '..', 'fixtures', 'blueprints');
 
 // should change these to use something in fixtures
 describe('(Model) BlueprintCollection', () => {
@@ -57,7 +52,7 @@ describe('(Model) BlueprintCollection', () => {
   describe('#lookup(name)', () => {
     test('returns falsy if no blueprint for name', () => {
       const blueprints = new BlueprintCollection([bpPath], fakeRc);
-      const result = blueprints.lookup('flyingGraysons')
+      const result = blueprints.lookup('flyingGraysons');
 
       expect(result).toBeFalsy();
     });
@@ -72,4 +67,3 @@ describe('(Model) BlueprintCollection', () => {
     });
   });
 });
-

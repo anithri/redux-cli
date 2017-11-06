@@ -8,11 +8,10 @@ const basicBlueprintPath = path.resolve(
   'blueprints',
   'basic'
 );
-const fakeRc = {withBp: () => ({})};
-
+const fakeRc = { withBp: () => ({}) };
 
 describe('(Model) Blueprint', () => {
-  const blueprint = new Blueprint(basicBlueprintPath,fakeRc);
+  const blueprint = new Blueprint(basicBlueprintPath, fakeRc);
 
   describe('#description', () => {
     test('returns a description', () => {
@@ -34,7 +33,10 @@ describe('(Model) Blueprint', () => {
       expect(files).toEqual(expectedFiles);
     });
     test('defaults to empty array when no files', () => {
-      const blueprint = new Blueprint('ridiculous/path/that/doesnt/exist', fakeRc);
+      const blueprint = new Blueprint(
+        'ridiculous/path/that/doesnt/exist',
+        fakeRc
+      );
       expect(blueprint.files()).toEqual([]);
     });
   });

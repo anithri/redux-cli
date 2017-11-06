@@ -4,11 +4,11 @@ const cwd = process.cwd();
 
 const fakeFs = {
   existsSync: () => true,
-  statSync: (dir) => {
+  statSync: dir => {
     if (dir.includes('.')) {
-      return {isDirectory: () => false};
+      return { isDirectory: () => false };
     } else {
-      return {isDirectory: () => true};
+      return { isDirectory: () => true };
     }
   }
 };
@@ -16,7 +16,7 @@ const fakeFs = {
 describe('(Models) DirCollection', () => {
   describe('new FileCollection(cliFiles, {name})', () => {
     test('it sets files and name', () => {
-      const testCollection = new DirCollection([], [], {name: 'Wally'});
+      const testCollection = new DirCollection([], [], { name: 'Wally' });
 
       expect(testCollection).toHaveProperty('name', 'Wally');
       expect(testCollection).toHaveProperty('bpDir', 'Wallies');
@@ -35,7 +35,7 @@ describe('(Models) DirCollection', () => {
       const currentBpDir = cwd + '/Dianas';
       const currentDotBpDir = cwd + '/.Dianas';
 
-      const testCollection = new DirCollection([], [], {name: 'Diana'});
+      const testCollection = new DirCollection([], [], { name: 'Diana' });
 
       const result = testCollection.fromRc([currentRc]);
 
@@ -49,12 +49,13 @@ describe('(Models) DirCollection', () => {
       const currentBpDir = cwd + '/Victors';
       const currentDotBpDir = cwd + '/.Victors';
 
-      const testCollection = new DirCollection([], [], {name: 'Victor'});
+      const testCollection = new DirCollection([], [], { name: 'Victor' });
 
-      const result = testCollection.findPaths([currentBpDir, currentDotBpDir], {fs: fakeFs});
+      const result = testCollection.findPaths([currentBpDir, currentDotBpDir], {
+        fs: fakeFs
+      });
 
       expect(result).toEqual([currentBpDir]);
     });
   });
-
 });
