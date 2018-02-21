@@ -5,7 +5,6 @@ import RcData from '../models/rc-data';
 import RcRaw from '../models/rc-raw';
 import UI from '../models/ui';
 
-
 function fetchDefaults() {
   return {};
 }

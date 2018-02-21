@@ -52,7 +52,7 @@ describe('RcData', () => {
         defaults: 'fakeDefaults',
         data: 'fakeData',
         parts: ['fakeData', 'fakeDefaults']
-      }
+      };
 
       expect(result).toBeInstanceOf(RcData);
       expect(result.data).toEqual(expected);
@@ -77,7 +77,7 @@ describe('RcData', () => {
         data: 'fakeData',
         priority: 'fakePriority',
         parts: ['fakePriority', 'fakeData']
-      }
+      };
       expect(result).toBeInstanceOf(RcData);
       expect(result.data).toEqual(expected);
     });

@@ -27,9 +27,8 @@ describe('(Models) RcRaw', () => {
 
   describe('#data()', () => {
     test('it returns assembled_data if it exists', () => {
-      const testData = {Aquaman: 'becomes cool?'};
+      const testData = { Aquaman: 'becomes cool?' };
       const testRcRaw = new RcRaw();
-
 
       testRcRaw.assembledData = testData;
       expect(testRcRaw.data()).toEqual(testData);
@@ -40,9 +39,8 @@ describe('(Models) RcRaw', () => {
 
       expect(testRcRaw.assembledData).to.be.undefined;
 
-      expect(testRcRaw.data()).toHaveProperty('assembly', {rcFiles: []});
+      expect(testRcRaw.data()).toHaveProperty('assembly', { rcFiles: [] });
     });
-
   });
 
   // TODO coverage not happy with _reduce

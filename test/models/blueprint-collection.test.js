@@ -13,9 +13,9 @@ const bpPath = path.resolve(__dirname, '..', 'fixtures', 'blueprints');
 describe('(Model) BlueprintCollection', () => {
   describe('#all()', () => {
     it('should return this.allBlueprints is it exists', () => {
-      const fakeData = ['Batman','Robin'];
+      const fakeData = ['Batman', 'Robin'];
       const blueprints = new BlueprintCollection([bpPath], fakeRc);
-      blueprints.allBlueprints = fakeData
+      blueprints.allBlueprints = fakeData;
       const result = blueprints.all();
 
       expect(result).toEqual(fakeData);
@@ -32,12 +32,12 @@ describe('(Model) BlueprintCollection', () => {
 
   describe('#allNames()', () => {
     it('should return array of Names from blueprints', () => {
-      const fakeData = [{name: 'Batman'},{name: 'Robin'}];
+      const fakeData = [{ name: 'Batman' }, { name: 'Robin' }];
       const blueprints = new BlueprintCollection([bpPath], fakeRc);
-      blueprints.allBlueprints = fakeData
+      blueprints.allBlueprints = fakeData;
       const result = blueprints.allNames();
 
-      expect(result).toEqual(['Batman','Robin']);
+      expect(result).toEqual(['Batman', 'Robin']);
     });
 
     it('should return an array of all blueprints in searchPaths', () => {

@@ -1,0 +1,8 @@
+{
+  "name": "<%= pascalEntityName %>",
+  "version": "1.0.0",
+  "description": "package of  blueprints",
+  "main": "index.js",
+  "license": "MIT",
+  "private": false
+}
